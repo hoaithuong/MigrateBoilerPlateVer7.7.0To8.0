@@ -14,7 +14,7 @@
     padding: $spacing * 2 + 56px $spacing $spacing * 2 $spacing;
     max-width: 70%;
     width: calc(100% - (#{$spacing} * 2));
-    margin: 0 auto;
+    margin: 0;
 
     .example {
         box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px 0px;

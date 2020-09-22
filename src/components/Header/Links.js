@@ -8,45 +8,47 @@ const Links = () => {
         <>
         <div className={styles.LinkContainer}>
             <div className={styles.LinkNav}>
+                <div className={styles.LinkSticky}>
             <NavLink to={"/"} className={styles.Link} activeClassName={styles.LinkActive} exact>
-                Basic
+                Basic Components
             </NavLink>
             <NavLink to={"/pivot-table"} className={styles.Link} activeClassName={styles.LinkActive} exact>
-                PivotTable
+                Pivot Table
             </NavLink>
             <NavLink to={"/geo-pushpin-chart"} className={styles.Link} activeClassName={styles.LinkActive} exact>
-                GeoPushpin
+                Geo Pushpin Chart
             </NavLink>
             <NavLink to={"/visualization"} className={styles.Link} activeClassName={styles.LinkActive} exact>
-                Visualization
+                Visualization Components
             </NavLink>
             <NavLink to={"/sorting"} className={styles.Link} activeClassName={styles.LinkActive} exact>
                 Sorting
             </NavLink>
             <NavLink to={"/time-over-time-comparison"} className={styles.Link} activeClassName={styles.LinkActive} exact>
-                TimeOver
+                Time Over Time Comparison
             </NavLink>
             <NavLink to={"/attribute-filter-components"} className={styles.Link} activeClassName={styles.LinkActive} exact>
-                AttributeFilter
+                Attribute Filter Component
             </NavLink>
             <NavLink to={"/date-filter-component"} className={styles.Link} activeClassName={styles.LinkActive} exact>
-                DateFilter
+                Date Filter Component
             </NavLink>
             <NavLink to={"/filter-by-measure-value"} className={styles.Link} activeClassName={styles.LinkActive} exact>
-                MeasureValueFilter
+                Measure Value Filter
             </NavLink>
             <NavLink to={"/arithmetic-measures"} className={styles.Link} activeClassName={styles.LinkActive} exact>
-                ArithmeticMeasures
+                Arithmetic Measures
             </NavLink>
             <NavLink to={"/execute"} className={styles.Link} activeClassName={styles.LinkActive} exact>
-                Execute
+                Execute Component
             </NavLink>
             <NavLink to={"/export"} className={styles.Link} activeClassName={styles.LinkActive} exact>
                 Export
             </NavLink>
             <NavLink to={"/drill"} className={styles.Link} activeClassName={styles.LinkActive} exact>
-                Drill
+                Drilling
             </NavLink>
+            </div>
             </div>
             </div>
         </>
