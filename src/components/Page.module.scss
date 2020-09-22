@@ -1,0 +1,34 @@
+@import "../theme.scss";
+
+.Page {
+    display: flex;
+    // flex-direction: column;
+    flex-wrap: wrap;
+    align-items: stretch;
+    background-color: rgb(250, 250, 250);
+    min-height: 100vh;
+}
+
+.Main {
+    flex: 1 0 auto;
+    padding: $spacing * 2 + 56px $spacing $spacing * 2 $spacing;
+    max-width: 70%;
+    width: calc(100% - (#{$spacing} * 2));
+    margin: 0 auto;
+
+    .example {
+        box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 3px 0px;
+    }
+}
+
+.VerticalCenter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.Inverse {
+    background-color: $color-paper-inverse;
+    color: $color-text-inverse;
+}
