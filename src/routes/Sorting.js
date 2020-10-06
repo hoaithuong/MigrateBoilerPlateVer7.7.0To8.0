@@ -2,14 +2,14 @@
 import React from "react";
 
 import Page from "../components/Page";
-import { useProjectId } from "../contexts/ProjectId";
+// import { useProjectId } from "../contexts/ProjectId";
 
 import MeasureSortingExample from "./components/MeasureSortingExample";
 import AttributeSortingExample from "./components/AttributeSortingExample";
 import DynamicSortingExample from "./components/DynamicSortingExample";
 
 const Sorting = () => {
-    const { projectId } = useProjectId();
+    // const { projectId } = useProjectId();
     return (
         <Page>
             <div>

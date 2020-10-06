@@ -2,7 +2,7 @@
 import React from "react";
 
 import Page from "../components/Page";
-import { useProjectId } from "../contexts/ProjectId";
+// import { useProjectId } from "../contexts/ProjectId";
 
 import MeasureValueFilterExample from "./components/MeasureValueFilterExample";
 import MeasureValueFilterShownInPercentageExample from "./components/MeasureValueFilterShownInPercentageExample";
@@ -12,10 +12,10 @@ import MeasureValueFilterComponentExample from "./components/MeasureValueFilterC
 import MeasureValueFilterComponentPercentageExample from "./components/MeasureValueFilterComponentPercentageExample";
 import MeasureValueFilterComponentRatioExample from "./components/MeasureValueFilterComponentRatioExample";
 import MeasureValueFilterDropdownComponentExample from "./components/MeasureValueFilterDropdownComponentExample";
-import MeasureValueFilterTreatNullAsZeroComponentExample from "./components/MeasureValueFilterTreatNullAsZeroComponentExample";
+// import MeasureValueFilterTreatNullAsZeroComponentExample from "./components/MeasureValueFilterTreatNullAsZeroComponentExample";
 
 const MeasureValueFilter = () => {
-    const { projectId } = useProjectId();
+    // const { projectId } = useProjectId();
     return (
         <Page>
             <div>
@@ -85,13 +85,13 @@ const MeasureValueFilter = () => {
                 <div className="s-measure-value-filter-example-4">
                     <MeasureValueFilterDropdownComponentExample/>
                 </div>
-                <p>
+                {/* <p>
                     This example shows the component for setting up a measure value filter with treat null value as
                     zero
                 </p>
                 <div className="s-measure-value-filter-example-5">
                     <MeasureValueFilterTreatNullAsZeroComponentExample/>
-                </div>
+                </div> */}
             </div>
         </Page>
     );

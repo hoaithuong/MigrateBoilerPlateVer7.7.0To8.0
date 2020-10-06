@@ -1,26 +1,20 @@
 // (C) 2007-2020 GoodData Corporation
 import React, { Component } from "react";
-import { GeoPushpinChart, Model } from "@gooddata/react-components";
+import { GeoPushpinChart } from "@gooddata/sdk-ui-geo";
 
-import "@gooddata/react-components/styles/css/main.css";
+import "@gooddata/sdk-ui-geo/styles/css/main.css";
 
-import { projectId } from "../utils/fixtures";
-import { MAPBOX_TOKEN, cityCoordinatesUri } from "../utils/fixturesGeoChart";
-
-const locationAttribute = Model.attribute(cityCoordinatesUri).localIdentifier("location");
+import { MAPBOX_TOKEN } from "../../constants/fixtures";
+import { locationAttribute } from "../../ldm/geoModel";
 
 export class GeoPushpinChartConfigurationViewportExample extends Component {
-    onError(...params) {
-        // eslint-disable-next-line no-console
-        return console.log("GeoPushpinChartConfigurationViewportExample onError", ...params);
-    }
-
     render() {
-        const style = { height: "500px" };
         return (
-            <div style={style} className="s-geo-pushpin-chart-configuration-viewport">
+            <div
+                style={{ height: "500px", position: "relative" }}
+                className="s-geo-pushpin-chart-configuration-viewport"
+            >
                 <GeoPushpinChart
-                    projectId={projectId}
                     location={locationAttribute}
                     config={{
                         mapboxToken: MAPBOX_TOKEN,
@@ -32,6 +26,11 @@ export class GeoPushpinChartConfigurationViewportExample extends Component {
                 />
             </div>
         );
+    }
+
+    onError(...params) {
+        // eslint-disable-next-line no-console
+        return console.log("GeoPushpinChartConfigurationViewportExample onError", ...params);
     }
 }
 

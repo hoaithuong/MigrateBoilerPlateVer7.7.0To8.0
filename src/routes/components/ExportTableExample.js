@@ -1,98 +1,44 @@
 import React from "react";
-import { Table, Model } from "@gooddata/react-components";
+import { PivotTable } from "@gooddata/sdk-ui-pivot";
+import { newAttributeSort, newAbsoluteDateFilter } from "@gooddata/sdk-model";
+import { ExampleWithExport } from "./utils/ExampleWithExport";
+import { Ldm, LdmExt } from "../../ldm";
 
-import "@gooddata/react-components/styles/css/main.css";
-
-import {
-    projectId,
-    locationStateDisplayFormIdentifier,
-    locationNameDisplayFormIdentifier,
-    franchiseFeesIdentifier,
-    franchiseFeesAdRoyaltyIdentifier,
-    franchiseFeesInitialFranchiseFeeIdentifier,
-    franchiseFeesIdentifierOngoingRoyalty,
-    menuCategoryAttributeDFIdentifier,
-    backendUrlForInfo,
-} from "../utils/fixtures";
-const DOWNLOADER_ID = "downloader";
 const measures = [
-    Model.measure(franchiseFeesIdentifier)
-        .format("#,##0")
-        .localIdentifier("franchiseFeesIdentifier"),
-    Model.measure(franchiseFeesAdRoyaltyIdentifier)
-        .format("#,##0")
-        .localIdentifier("franchiseFeesAdRoyaltyIdentifier"),
-    Model.measure(franchiseFeesInitialFranchiseFeeIdentifier)
-        .format("#,##0")
-        .localIdentifier("franchiseFeesInitialFranchiseFeeIdentifier"),
-    Model.measure(franchiseFeesIdentifierOngoingRoyalty)
-        .format("#,##0")
-        .localIdentifier("franchiseFeesIdentifierOngoingRoyalty"),
+    LdmExt.FranchiseFees,
+    LdmExt.FranchiseFeesAdRoyalty,
+    LdmExt.FranchiseFeesInitialFranchiseFee,
+    LdmExt.FranchiseFeesOngoingRoyalty,
 ];
 
-const attributes = [
-    Model.attribute(locationStateDisplayFormIdentifier).localIdentifier("state"),
-    Model.attribute(locationNameDisplayFormIdentifier).localIdentifier("name"),
-    Model.attribute(menuCategoryAttributeDFIdentifier).localIdentifier("menu"),
-];
-export class ExportTableExample extends React.Component {
-    constructor(props) {
-        super(props);
-        this.doExport = this.doExport.bind(this);
-        this.onExportReady = this.onExportReady.bind(this);
-    }
+const attributes = [Ldm.LocationState, Ldm.LocationName.Default, LdmExt.MenuCategory];
 
-    onExportReady(exportResult) {
-        this.exportResult = exportResult;
-    }
+const columns = [Ldm.DateQuarter, Ldm.DateMonth.Short];
 
-    async doExport() {
-        try {
-            const result = await this.exportResult({
-                format: "xlsx",
-                includeFilterContext: true,
-                mergeHeaders: true,
-                title: "CustomTitle",
-            });
-            this.downloadFile(result.uri);
-            console.log("Export successfully: ", result.uri);
-        } catch (error) {
-            console.log("Export error: ", error);
-        }
-    }
-    downloadFile = uri => {
-        let anchor = document.getElementById(DOWNLOADER_ID);
-        if (!anchor) {
-            anchor = document.createElement("a");
-            anchor.id = DOWNLOADER_ID;
-            document.body.appendChild(anchor);
-        }
-        anchor.href = backendUrlForInfo + uri;
-        anchor.download = uri;
-        anchor.click();
-    };
+const sortBy = [newAttributeSort("menu", "asc")];
 
-    render() {
-        return (
-            <div style={{ height: 367 }}>
-                <Table
-                    projectId={projectId}
-                    measures={measures}
-                    attributes={attributes}
-                    filters={[
-                        Model.attributeFilter("label.restaurantlocation.locationresort").notIn(
-                            "Highland Village",
-                            "Irving",
-                        ),
-                    ]}
-                    onExportReady={this.onExportReady}
-                />
-                <button className="button button-secondary" onClick={this.doExport}>
-                    Export
-                </button>
-            </div>
-        );
-    }
-}
+const filters = [newAbsoluteDateFilter(LdmExt.dateDatasetIdentifier, "2017-01-01", "2017-12-31")];
 
-export default ExportTableExample;
+const style = { height: 300 };
+
+export const PivotTableExportExample = () => {
+    return (
+        <ExampleWithExport filters={filters}>
+            {(onExportReady) => (
+                <div style={style} className="s-pivot-table-sorting">
+                    <PivotTable
+                        measures={measures}
+                        rows={attributes}
+                        columns={columns}
+                        pageSize={20}
+                        sortBy={sortBy}
+                        filters={filters}
+                        onExportReady={onExportReady}
+                    />
+                </div>
+            )}
+        </ExampleWithExport>
+    );
+};
+
+export default PivotTableExportExample;

@@ -1,21 +1,20 @@
 // (C) 2007-2020 GoodData Corporation
 import React from "react";
-import PropTypes from "prop-types";
 import classNames from "classnames";
-import { PivotTable, Model, MeasureValueFilterDropdown } from "@gooddata/react-components";
+import { PivotTable } from "@gooddata/sdk-ui-pivot";
+import { MeasureValueFilterDropdown } from "@gooddata/sdk-ui-filters";
+import { measureLocalId, localIdRef } from "@gooddata/sdk-model";
+import { LdmExt } from "../../ldm";
 
-import "@gooddata/react-components/styles/css/main.css";
-import { projectId, franchisedSalesIdentifier, locationNameDisplayFormIdentifier } from "../utils/fixtures";
+const measures = [LdmExt.FranchisedSales];
 
-const franchisedSalesMeasure = Model.measure(franchisedSalesIdentifier)
-    .format("#,##0")
-    .localIdentifier("franchisedSales")
-    .title("Franchised Sales");
-const measures = [franchisedSalesMeasure];
+const attributes = [LdmExt.LocationName];
 
-const attributes = [Model.attribute(locationNameDisplayFormIdentifier).localIdentifier("locationName")];
-
-const defaultMeasureValueFilter = Model.measureValueFilter("franchisedSales");
+const defaultFilter = {
+    measureValueFilter: {
+        measure: localIdRef(measureLocalId(measures[0])),
+    },
+};
 
 const DropdownButton = ({ isActive, measureTitle, onClick }) => {
     const className = classNames(
@@ -25,7 +24,7 @@ const DropdownButton = ({ isActive, measureTitle, onClick }) => {
         "gd-button-secondary",
         "button-dropdown",
         "icon-right",
-        { "icon-navigateup": isActive, "icon-navigatedown": !isActive },
+        { "icon-navigateup": isActive, "icon-navigatedown": !isActive }
     );
 
     return (
@@ -35,25 +34,16 @@ const DropdownButton = ({ isActive, measureTitle, onClick }) => {
     );
 };
 
-DropdownButton.propTypes = {
-    isActive: PropTypes.bool.isRequired,
-    measureTitle: PropTypes.string.isRequired,
-    onClick: PropTypes.func.isRequired,
-};
-
 export class MeasureValueFilterComponentExample extends React.PureComponent {
-    constructor(props) {
-        super(props);
-        this.ref = React.createRef();
-    }
-
     state = {
         displayDropdown: false,
-        filters: [defaultMeasureValueFilter],
+        filters: [],
     };
 
-    onApply = filter => {
-        this.setState({ filters: [filter], displayDropdown: false });
+    ref = React.createRef();
+
+    onApply = (filter) => {
+        this.setState({ filters: [filter ?? defaultFilter], displayDropdown: false });
     };
 
     onCancel = () => {
@@ -61,11 +51,12 @@ export class MeasureValueFilterComponentExample extends React.PureComponent {
     };
 
     toggleDropdown = () => {
-        this.setState(state => ({ ...state, displayDropdown: !state.displayDropdown }));
+        this.setState((state) => ({ ...state, displayDropdown: !state.displayDropdown }));
     };
 
     render() {
         const { filters, displayDropdown } = this.state;
+
         return (
             <React.Fragment>
                 <div ref={this.ref}>
@@ -81,16 +72,12 @@ export class MeasureValueFilterComponentExample extends React.PureComponent {
                         onCancel={this.onCancel}
                         filter={filters[0]}
                         anchorEl={this.ref.current}
+                        measureIdentifier={measureLocalId(LdmExt.FranchisedSales)}
                     />
                 ) : null}
                 <hr className="separator" />
                 <div style={{ height: 300 }} className="s-pivot-table">
-                    <PivotTable
-                        projectId={projectId}
-                        measures={measures}
-                        rows={attributes}
-                        filters={filters}
-                    />
+                    <PivotTable measures={measures} rows={attributes} filters={filters} />
                 </div>
             </React.Fragment>
         );

@@ -1,61 +1,37 @@
 // (C) 2007-2020 GoodData Corporation
-import React from "react";
-import { PivotTable, Model, MeasureValueFilter } from "@gooddata/react-components";
-
-import "@gooddata/react-components/styles/css/main.css";
-import {
-    projectId,
-    sumOfNumberLocalIdentifier,
-    sumOfNumberIdentifier,
-    nameAttributeIdentifier,
-    nameAttributeLocalIdentifier,
-} from "../utils/fixtures";
+import React, { useState } from "react";
+import { PivotTable } from "@gooddata/sdk-ui-pivot";
+import { MeasureValueFilter } from "@gooddata/sdk-ui-filters";
+import { measureLocalId, newMeasureValueFilter } from "@gooddata/sdk-model";
+import { LdmExt } from "../../ldm";
 
 const measureTitle = "Sum of Number";
 
-const defaultMeasureValueFilter = Model.measureValueFilter(sumOfNumberLocalIdentifier);
+const defaultMeasureValueFilter = newMeasureValueFilter(LdmExt.sumOfNumber, "BETWEEN", -30, 30, 0);
 
-const measures = [
-    Model.measure(sumOfNumberIdentifier)
-        .aggregation("sum")
-        .alias("Sum of Number")
-        .localIdentifier(sumOfNumberLocalIdentifier),
-];
+const measures = [LdmExt.sumOfNumber];
 
-const attributes = [Model.attribute(nameAttributeIdentifier).localIdentifier(nameAttributeLocalIdentifier)];
+const attributes = [LdmExt.nameAttribute];
 
-export class MeasureValueFilterTreatNullAsZeroComponentExample extends React.PureComponent {
-    state = {
-        filters: [defaultMeasureValueFilter],
-    };
+const MeasureValueFilterTreatNullAsZeroComponentExample = () => {
+    const [filters, setFilters] = useState([defaultMeasureValueFilter]);
 
-    onApply = filter => {
-        this.setState({ filters: [filter] });
-    };
+    return (
+        <React.Fragment>
+            <MeasureValueFilter
+                onApply={(f) => setFilters([f])}
+                filter={filters[0]}
+                buttonTitle={measureTitle}
+                displayTreatNullAsZeroOption
+                measureIdentifier={measureLocalId(LdmExt.sumOfNumber)}
+            />
 
-    render() {
-        const { filters } = this.state;
-        return (
-            <React.Fragment>
-                <MeasureValueFilter
-                    onApply={this.onApply}
-                    filter={filters[0]}
-                    buttonTitle={measureTitle}
-                    displayTreatNullAsZeroOption
-                    treatNullAsZeroDefaultValue
-                />
-                <hr className="separator" />
-                <div style={{ height: 300 }} className="s-pivot-table">
-                    <PivotTable
-                        projectId={projectId}
-                        measures={measures}
-                        rows={attributes}
-                        filters={filters}
-                    />
-                </div>
-            </React.Fragment>
-        );
-    }
-}
+            <hr className="separator" />
+            <div style={{ height: 300 }} className="s-pivot-table">
+                <PivotTable measures={measures} rows={attributes} filters={filters} />
+            </div>
+        </React.Fragment>
+    );
+};
 
 export default MeasureValueFilterTreatNullAsZeroComponentExample;

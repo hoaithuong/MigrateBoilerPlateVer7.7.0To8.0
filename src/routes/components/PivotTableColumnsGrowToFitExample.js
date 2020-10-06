@@ -1,49 +1,36 @@
 // (C) 2007-2020 GoodData Corporation
-import React, { Component } from "react";
-import { Model, PivotTable } from "@gooddata/react-components";
+import React from "react";
+import { PivotTable } from "@gooddata/sdk-ui-pivot";
+import { LdmExt } from "../../ldm";
 
-import "@gooddata/react-components/styles/css/main.css";
+const measures = [LdmExt.FranchiseFees];
 
-import {
-    employeeNameIdentifier,
-    franchisedSalesIdentifier,
-    locationNameDisplayFormIdentifier,
-    projectId,
-} from "../utils/fixtures";
+const attributes = [LdmExt.EmployeeName];
 
-const measures = [
-    Model.measure(franchisedSalesIdentifier)
-        .format("#,##0")
-        .alias("Sales"),
-];
+const columns = [LdmExt.LocationName];
 
-const attributes = [Model.attribute(employeeNameIdentifier)];
+const config = {
+    columnSizing: {
+        defaultWidth: "viewport",
+        growToFit: true,
+    },
+};
 
-const columns = [Model.attribute(locationNameDisplayFormIdentifier).localIdentifier("location")];
-
-export class PivotTableColumnsGrowToFitExample extends Component {
-    render() {
-        return (
-            <div
-                style={{ height: 300, resize: "both", overflow: "auto" }}
-                className="s-pivot-table-columns-grow-to-fit"
-            >
-                <PivotTable
-                    projectId={projectId}
-                    measures={measures}
-                    rows={attributes}
-                    columns={columns}
-                    config={{
-                        columnSizing: {
-                            defaultWidth: "viewport",
-                            growToFit: true,
-                        },
-                    }}
-                    pageSize={20}
-                />
-            </div>
-        );
-    }
-}
+export const PivotTableColumnsGrowToFitExample = () => {
+    return (
+        <div
+            style={{ height: 300, resize: "both", overflow: "auto" }}
+            className="s-pivot-table-columns-grow-to-fit"
+        >
+            <PivotTable
+                measures={measures}
+                rows={attributes}
+                columns={columns}
+                config={config}
+                pageSize={20}
+            />
+        </div>
+    );
+};
 
 export default PivotTableColumnsGrowToFitExample;

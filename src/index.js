@@ -5,7 +5,9 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
 import "./index.scss";
-import "@gooddata/react-components/styles/css/main.css";
+import "@gooddata/sdk-ui-charts/styles/css/main.css";
+import "@gooddata/sdk-ui-pivot/styles/css/main.css";
+import "@gooddata/sdk-ui-filters/styles/css/main.css";
 
 ReactDOM.render(<App />, document.getElementById("root"));
 

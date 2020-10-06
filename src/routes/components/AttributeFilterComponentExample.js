@@ -1,48 +1,37 @@
 // (C) 2007-2019 GoodData Corporation
 import React, { Component } from "react";
-import { AttributeFilter, Model } from "@gooddata/react-components";
-
-import "@gooddata/react-components/styles/css/main.css";
-
-import { employeeNameIdentifier, employeeNameDisplayFormUri, projectId } from "../utils/fixtures";
+import { AttributeFilter } from "@gooddata/sdk-ui-filters";
+import { idRef, newPositiveAttributeFilter, newNegativeAttributeFilter, uriRef } from "@gooddata/sdk-model";
+import { Ldm, LdmExt } from "../../ldm";
 
 export class AttributeFilterComponentExample extends Component {
-    onApply(...params) {
+    onApply = (...params) => {
         // eslint-disable-next-line no-console
         console.log("AttributeFilterComponentExample onApply", ...params);
-    }
-
-    onApplyWithFilterDefinition(...params) {
-        // eslint-disable-next-line no-console
-        console.log("AttributeFilterComponentExample onApplyWithFilterDefinition", ...params);
-    }
+    };
 
     render() {
         return (
             <div>
                 <div>attribute defined by identifier</div>
-                <div className="s-tested-component">
-                    <AttributeFilter
-                        projectId={projectId}
-                        identifier={employeeNameIdentifier}
-                        onApply={this.onApply}
-                    />
-                </div>
+                <AttributeFilter
+                    filter={newPositiveAttributeFilter(idRef(LdmExt.EmployeeNameIdentifier), [])}
+                    fullscreenOnMobile={false}
+                    onApply={this.onApply}
+                />
+
+                <br />
                 <div>attribute defined by display form uri</div>
-                <AttributeFilter uri={employeeNameDisplayFormUri} onApply={this.onApply} />
+                <AttributeFilter
+                    filter={newNegativeAttributeFilter(uriRef(LdmExt.employeeNameDisplayFormUri), [])}
+                    onApply={this.onApply}
+                />
+
                 <br />
                 <div>attribute defined by filter definition, including selection</div>
                 <AttributeFilter
-                    projectId={projectId}
-                    filter={Model.positiveAttributeFilter(employeeNameIdentifier, ["Abbie Adams"], true)}
+                    filter={newPositiveAttributeFilter(Ldm.EmployeeName.Default, ["Abbie Adams"])}
                     onApply={this.onApply}
-                />
-                <br />
-                <div>attribute filter with new onApplyWithFilterDefinition</div>
-                <AttributeFilter
-                    projectId={projectId}
-                    filter={Model.positiveAttributeFilter(employeeNameIdentifier, ["Abbie Adams"], true)}
-                    onApplyWithFilterDefinition={this.onApplyWithFilterDefinition}
                 />
             </div>
         );

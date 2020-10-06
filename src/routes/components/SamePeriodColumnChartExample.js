@@ -1,49 +1,22 @@
 // (C) 2007-2019 GoodData Corporation
 
-import React, { Component } from "react";
-import { ColumnChart, Model } from "@gooddata/react-components";
+import React from "react";
+import { ColumnChart } from "@gooddata/sdk-ui-charts";
+import { newPopMeasure } from "@gooddata/sdk-model";
+import { Ldm, LdmExt } from "../../ldm";
 
-import "@gooddata/react-components/styles/css/main.css";
+const totalSalesYearAgo = newPopMeasure(Ldm.$TotalSales, LdmExt.yearDateDataSetAttributeIdentifier, (m) =>
+    m.alias("$ Total Sales - SP year ago")
+);
 
-import {
-    totalSalesIdentifier,
-    quarterDateIdentifier,
-    yearDateDataSetAttributeIdentifier,
-    projectId,
-} from "../utils/fixtures";
+const style = { height: 300 };
 
-const measures = [
-    Model.popMeasure("totalSales", yearDateDataSetAttributeIdentifier).alias("$ Total Sales - SP year ago"),
-    Model.measure(totalSalesIdentifier)
-        .localIdentifier("totalSales")
-        .alias("$ Total Sales"),
-];
-const attribute = Model.attribute(quarterDateIdentifier);
-
-export class SamePeriodColumnChartExample extends Component {
-    onLoadingChanged(...params) {
-        // eslint-disable-next-line no-console
-        return console.log("SamePeriodColumnChartExample onLoadingChanged", ...params);
-    }
-
-    onError(...params) {
-        // eslint-disable-next-line no-console
-        return console.log("SamePeriodColumnChartExample onError", ...params);
-    }
-
-    render() {
-        return (
-            <div style={{ height: 300 }} className="s-column-chart">
-                <ColumnChart
-                    projectId={projectId}
-                    measures={measures}
-                    viewBy={attribute}
-                    onLoadingChanged={this.onLoadingChanged}
-                    onError={this.onError}
-                />
-            </div>
-        );
-    }
-}
+export const SamePeriodColumnChartExample = () => {
+    return (
+        <div style={style} className="s-column-chart">
+            <ColumnChart measures={[Ldm.$TotalSales, totalSalesYearAgo]} viewBy={Ldm.DateQuarter} />
+        </div>
+    );
+};
 
 export default SamePeriodColumnChartExample;

@@ -2,27 +2,27 @@
 import React from "react";
 
 import Page from "../components/Page";
-import { useProjectId } from "../contexts/ProjectId";
+// import { useProjectId } from "../contexts/ProjectId";
 
-import VisualizationColumnChartExample from "./components/VisualizationColumnChartByUriExample";
-import VisualizationTableExample from "./components/VisualizationTableByUriExample";
-import VisualizationBarExample from "./components/VisualizationBarByUriExample";
-import VisualizationLineExample from "./components/VisualizationLineByUriExample";
-import VisualizationAreaExample from "./components/VisualizationAreaByUriExample";
-import VisualizationHeadlineExample from "./components/VisualizationHeadlineByUriExample";
-import VisualizationScatterExample from "./components/VisualizationScatterByUriExample";
-import VisualizationBubbleExample from "./components/VisualizationBubbleByUriExample";
-import VisualizationPieExample from "./components/VisualizationPieByUriExample";
-import VisualizationDonutExample from "./components/VisualizationDonutByUriExample";
-import VisualizationTreemapExample from "./components/VisualizationTreemapByUriExample";
-import VisualizationHeatmapExample from "./components/VisualizationHeatmapByUriExample";
-import VisualizationComboExample from "./components/VisualizationComboByUriExample";
-import VisualizationBulletExample from "./components/VisualizationBulletByUriExample";
-import VisualizationGeoPushpinChartByUriExample from "./components/VisualizationGeoPushpinChartByUriExample";
+// import VisualizationColumnChartExample from "./components/VisualizationColumnChartByUriExample";
+// import VisualizationTableExample from "./components/VisualizationTableByUriExample";
+// import VisualizationBarExample from "./components/VisualizationBarByUriExample";
+// import VisualizationLineExample from "./components/VisualizationLineByUriExample";
+// import VisualizationAreaExample from "./components/VisualizationAreaByUriExample";
+// import VisualizationHeadlineExample from "./components/VisualizationHeadlineByUriExample";
+// import VisualizationScatterExample from "./components/VisualizationScatterByUriExample";
+// import VisualizationBubbleExample from "./components/VisualizationBubbleByUriExample";
+// import VisualizationPieExample from "./components/VisualizationPieByUriExample";
+// import VisualizationDonutExample from "./components/VisualizationDonutByUriExample";
+// import VisualizationTreemapExample from "./components/VisualizationTreemapByUriExample";
+// import VisualizationHeatmapExample from "./components/VisualizationHeatmapByUriExample";
+// import VisualizationComboExample from "./components/VisualizationComboByUriExample";
+// import VisualizationBulletExample from "./components/VisualizationBulletByUriExample";
+// import VisualizationGeoPushpinChartByUriExample from "./components/VisualizationGeoPushpinChartByUriExample";
 
 import VisualizationColumnChartByIdentifierExample from "./components/VisualizationColumnChartByIdentifierExample";
-import VisualizationMeasureValueFilterByIdentifierExample from "./components/VisualizationMeasureValueFilterByIdentifierExample";
-import VisualizationMeasureValueFilterTreatNullAsZeroByIdentifierExample from "./components/VisualizationMeasureValueFilterTreatNullAsZeroByIdentifierExample";
+// import VisualizationMeasureValueFilterByIdentifierExample from "./components/VisualizationMeasureValueFilterByIdentifierExample";
+// import VisualizationMeasureValueFilterTreatNullAsZeroByIdentifierExample from "./components/VisualizationMeasureValueFilterTreatNullAsZeroByIdentifierExample";
 import VisualizationTableExampleIdentifier from "./components/VisualizationTableByIdentifierExample";
 import VisualizationBarExampleIdentifier from "./components/VisualizationBarByIdentifierExample";
 import VisualizationLineExampleIdentifier from "./components/VisualizationLineByIdentifierExample";
@@ -39,11 +39,11 @@ import VisualizationBulletExampleIdentifier from "./components/VisualizationBull
 import VisualizationGeoPushpinChartByIdentifierExample from "./components/VisualizationGeoPushpinChartByIdentifierExample";
 
 const VisualizationComponents = () => {
-    const { projectId } = useProjectId();
+    // const { projectId } = useProjectId();
     return (
         <Page>
             <div>
-                <h1>Visualization by URI</h1>
+                {/* <h1>Visualization by URI</h1>
 
                 <p>
                     These are the examples of the generic Visualization component that uses URI to identify insights.
@@ -122,7 +122,7 @@ const VisualizationComponents = () => {
                 <hr className="separator" />
 
                 <h2 id="geo-pushpin-chart">Geo Pushpin Chart</h2>
-                <VisualizationGeoPushpinChartByUriExample/>
+                <VisualizationGeoPushpinChartByUriExample/> */}
 
                 <h1>Visualization by identifier</h1>
 
@@ -206,7 +206,7 @@ const VisualizationComponents = () => {
                 <h2 id="geo-pushpin-chart">Geo Pushpin Chart</h2>
                 <VisualizationGeoPushpinChartByIdentifierExample/>
 
-                <hr className="separator" />
+                {/* <hr className="separator" />
 
                 <h2 id="measure-value-filter-column-chart">Measure Value Filter Column Chart</h2>
                 <VisualizationMeasureValueFilterByIdentifierExample/>
@@ -216,7 +216,7 @@ const VisualizationComponents = () => {
                 <h2 id="measure-value-filter-treat-null-as-zero">
                     Measure Value Filter that treats measure null values as zero
                 </h2>
-                <VisualizationMeasureValueFilterTreatNullAsZeroByIdentifierExample></VisualizationMeasureValueFilterTreatNullAsZeroByIdentifierExample>
+                <VisualizationMeasureValueFilterTreatNullAsZeroByIdentifierExample></VisualizationMeasureValueFilterTreatNullAsZeroByIdentifierExample> */}
             </div>
         </Page>
     );

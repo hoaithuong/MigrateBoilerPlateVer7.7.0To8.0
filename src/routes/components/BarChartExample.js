@@ -1,41 +1,15 @@
-// (C) 2007-2019 GoodData Corporation
-import React, { Component } from "react";
-import { BarChart, Model } from "@gooddata/react-components";
+import React from "react";
+import { BarChart } from "@gooddata/sdk-ui-charts";
+import { Ldm, LdmExt } from "../../ldm";
 
-import "@gooddata/react-components/styles/css/main.css";
+const style = { height: 300 };
 
-import { totalSalesIdentifier, locationResortIdentifier, projectId } from "../utils/fixtures";
-
-const amount = Model.measure(totalSalesIdentifier)
-    .format("#,##0")
-    .alias("$ Total Sales");
-
-const locationResort = Model.attribute(locationResortIdentifier);
-
-export class BarChartExample extends Component {
-    onLoadingChanged(...params) {
-        // eslint-disable-next-line no-console
-        console.info("BarChartExample onLoadingChanged", ...params);
-    }
-
-    onError(...params) {
-        // eslint-disable-next-line no-console
-        console.info("BarChartExample onLoadingChanged", ...params);
-    }
-
-    render() {
-        return (
-            <div style={{ height: 300 }} className="s-bar-chart">
-                <BarChart
-                    projectId={projectId}
-                    measures={[amount]}
-                    viewBy={locationResort}
-                    onLoadingChanged={this.onLoadingChanged}
-                    onError={this.onError}
-                />
-            </div>
-        );
-    }
-}
+export const BarChartExample = () => {
+    return (
+        <div style={style} className="s-bar-chart">
+            <BarChart measures={[LdmExt.TotalSales1]} viewBy={Ldm.LocationResort} />
+        </div>
+    );
+};
 
 export default BarChartExample;

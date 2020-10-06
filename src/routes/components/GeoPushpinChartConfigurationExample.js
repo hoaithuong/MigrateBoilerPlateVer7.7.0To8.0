@@ -1,32 +1,51 @@
 // (C) 2020 GoodData Corporation
 import React, { Component } from "react";
-import { GeoPushpinChart, Model } from "@gooddata/react-components";
+import { GeoPushpinChart } from "@gooddata/sdk-ui-geo";
 
-import "@gooddata/react-components/styles/css/main.css";
+import "@gooddata/sdk-ui-geo/styles/css/main.css";
 
-import { projectId } from "../utils/fixtures";
+import { MAPBOX_TOKEN } from "../../constants/fixtures";
 import {
-    MAPBOX_TOKEN,
-    cityCoordinatesUri,
-    populationUri,
-    densityUri,
-    stateNamesUri,
-    cityNamesUri,
-} from "../utils/fixturesGeoChart";
-
-const sizeMeasure = Model.measure(populationUri)
-    .format("#,##0.00")
-    .aggregation("sum")
-    .alias("Population");
-const colorMeasure = Model.measure(densityUri)
-    .format("#,##0.00")
-    .aggregation("sum")
-    .alias("Density");
-const locationAttribute = Model.attribute(cityCoordinatesUri).localIdentifier("location");
-const segmentByAttribute = Model.attribute(stateNamesUri).localIdentifier("segment");
-const tooltipTextAttribute = Model.attribute(cityNamesUri).localIdentifier("tooltipText");
+    tooltipTextAttribute,
+    locationAttribute,
+    sizeMeasure,
+    colorMeasure,
+    segmentByAttribute,
+} from "../../ldm/geoModel";
 
 export class GeoPushpinChartConfigurationExample extends Component {
+    render() {
+        const geoConfig = {
+            center: {
+                lat: 39,
+                lng: -80.5,
+            },
+
+            zoom: 6,
+            tooltipText: tooltipTextAttribute,
+            mapboxToken: MAPBOX_TOKEN,
+        };
+
+        return (
+            <div
+                style={{ height: "500px", position: "relative" }}
+                className="s-geo-pushpin-chart-configuration"
+            >
+                <GeoPushpinChart
+                    location={locationAttribute}
+                    size={sizeMeasure}
+                    color={colorMeasure}
+                    segmentBy={segmentByAttribute}
+                    config={geoConfig}
+                    onZoomChanged={this.onZoomChanged}
+                    onCenterPositionChanged={this.onCenterPositionChanged}
+                    onLoadingChanged={this.onLoadingChanged}
+                    onError={this.onError}
+                />
+            </div>
+        );
+    }
+
     onLoadingChanged(...params) {
         // eslint-disable-next-line no-console
         return console.log("GeoPushpinChartConfigurationExample onLoadingChanged", ...params);
@@ -45,35 +64,6 @@ export class GeoPushpinChartConfigurationExample extends Component {
     onCenterPositionChanged(...params) {
         // eslint-disable-next-line no-console
         return console.log("GeoPushpinChartConfigurationExample onCenterPositionChanged", ...params);
-    }
-
-    render() {
-        const style = { height: "500px" };
-        const geoConfig = {
-            center: {
-                lat: 39,
-                lng: -80.5,
-            },
-            zoom: 6,
-            tooltipText: tooltipTextAttribute,
-            mapboxToken: MAPBOX_TOKEN,
-        };
-        return (
-            <div style={style} className="s-geo-pushpin-chart-configuration">
-                <GeoPushpinChart
-                    projectId={projectId}
-                    location={locationAttribute}
-                    size={sizeMeasure}
-                    color={colorMeasure}
-                    segmentBy={segmentByAttribute}
-                    config={geoConfig}
-                    onZoomChanged={this.onZoomChanged}
-                    onCenterPositionChanged={this.onCenterPositionChanged}
-                    onLoadingChanged={this.onLoadingChanged}
-                    onError={this.onError}
-                />
-            </div>
-        );
     }
 }
 

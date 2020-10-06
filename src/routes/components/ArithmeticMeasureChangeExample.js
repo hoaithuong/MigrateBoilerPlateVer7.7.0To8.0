@@ -1,62 +1,34 @@
 // (C) 2007-2019 GoodData Corporation
 
-import React, { Component } from "react";
-import { Table, Model } from "@gooddata/react-components";
+import React from "react";
+import { PivotTable } from "@gooddata/sdk-ui-pivot";
+import { newPreviousPeriodMeasure, newArithmeticMeasure, newAbsoluteDateFilter } from "@gooddata/sdk-model";
+import { Ldm, LdmExt } from "../../ldm";
 
-import "@gooddata/react-components/styles/css/main.css";
+const totalSalesYearAgoBucketItem = newPreviousPeriodMeasure(
+    LdmExt.TotalSales1,
+    [{ dataSet: LdmExt.dateDatasetIdentifier, periodsAgo: 1 }],
+    (m) => m.alias("$ Total Sales - year ago")
+);
 
-import { projectId, monthDateIdentifier, totalSalesIdentifier, dateDataSetUri } from "../utils/fixtures";
+const changeMeasure = newArithmeticMeasure([LdmExt.TotalSales1, totalSalesYearAgoBucketItem], "change", (m) =>
+    m.title("% Total Sales Change")
+);
 
-const totalSalesYearAgoBucketItem = Model.previousPeriodMeasure("totalSales", [
-    { dataSet: dateDataSetUri, periodsAgo: 1 },
-])
-    .alias("$ Total Sales - year ago")
-    .localIdentifier("totalSales_sp");
+const measures = [totalSalesYearAgoBucketItem, LdmExt.TotalSales1, changeMeasure];
 
-const totalSalesBucketItem = Model.measure(totalSalesIdentifier)
-    .localIdentifier("totalSales")
-    .alias("$ Total Sales");
+const rows = [Ldm.DateMonth.Short];
 
-const measures = [
-    totalSalesYearAgoBucketItem,
-    totalSalesBucketItem,
-    Model.arithmeticMeasure(
-        [totalSalesBucketItem.measure.localIdentifier, totalSalesYearAgoBucketItem.measure.localIdentifier],
-        "change",
-    )
-        .title("% Total Sales Change")
-        .localIdentifier("totalSalesChange"),
-];
+const filters = [newAbsoluteDateFilter(LdmExt.dateDatasetIdentifier, "2017-01-01", "2017-12-31")];
 
-const attributes = [Model.attribute(monthDateIdentifier).localIdentifier("month")];
+const style = { height: 200 };
 
-const filters = [Model.absoluteDateFilter(dateDataSetUri, "2017-01-01", "2017-12-31")];
-
-export class ArithmeticMeasureChangeExample extends Component {
-    onLoadingChanged(...params) {
-        // eslint-disable-next-line no-console
-        return console.log("ArithmeticMeasureChangeExample onLoadingChanged", ...params);
-    }
-
-    onError(...params) {
-        // eslint-disable-next-line no-console
-        return console.log("ArithmeticMeasureChangeExample onError", ...params);
-    }
-
-    render() {
-        return (
-            <div style={{ height: 200 }} className="s-table">
-                <Table
-                    projectId={projectId}
-                    measures={measures}
-                    filters={filters}
-                    attributes={attributes}
-                    onLoadingChanged={this.onLoadingChanged}
-                    onError={this.onError}
-                />
-            </div>
-        );
-    }
-}
+export const ArithmeticMeasureChangeExample = () => {
+    return (
+        <div style={style} className="s-table">
+            <PivotTable measures={measures} filters={filters} rows={rows} />
+        </div>
+    );
+};
 
 export default ArithmeticMeasureChangeExample;

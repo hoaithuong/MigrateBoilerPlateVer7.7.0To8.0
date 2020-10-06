@@ -2,19 +2,19 @@
 import React from "react";
 
 import Page from "../components/Page";
-import { useProjectId } from "../contexts/ProjectId";
+// import { useProjectId } from "../contexts/ProjectId";
 
 import SamePeriodColumnChartExample from "./components/SamePeriodColumnChartExample";
 import PreviousPeriodHeadlineExample from "./components/PreviousPeriodHeadlineExample";
-import SamePeriodPivotTableExample from "./components/SamePeriodPivotTableExample";
-import SamePeriodBarChartExample from "./components/SamePeriodBarChartExample";
-import SamePeriodLineChartExample from "./components/SamePeriodLineChartExample";
-import SamePeriodComboChartExample from "./components/SamePeriodComboChartExample";
-import SamePeriodHeadLineExample from "./components/SamePeriodHeadLineExample";
-import SamePeriodBulletChartExample from "./components/SamePeriodBulletChartExample";
+// import SamePeriodPivotTableExample from "./components/SamePeriodPivotTableExample";
+// import SamePeriodBarChartExample from "./components/SamePeriodBarChartExample";
+// import SamePeriodLineChartExample from "./components/SamePeriodLineChartExample";
+// import SamePeriodComboChartExample from "./components/SamePeriodComboChartExample";
+// import SamePeriodHeadLineExample from "./components/SamePeriodHeadLineExample";
+// import SamePeriodBulletChartExample from "./components/SamePeriodBulletChartExample";
 
 const TimeOverTimeComparison = () => {
-    const { projectId } = useProjectId();
+    // const { projectId } = useProjectId();
     return (
         <Page>
             <div>
@@ -33,12 +33,12 @@ const TimeOverTimeComparison = () => {
 
                 <hr className="separator" />
 
-                <h2>Comparing to the same period previous year in pivot table</h2>
+                {/* <h2>Comparing to the same period previous year in pivot table</h2>
                 <div className="s-compare-to-the-same-period-previous-year-example-2">
                     <SamePeriodPivotTableExample/>
-                </div>
+                </div> */}
 
-                <hr className="separator" />
+                {/* <hr className="separator" />
 
                 <h2>Comparing to the same period previous year in bar chart</h2>
                 <div className="s-compare-to-the-same-period-previous-year-example-3">
@@ -72,10 +72,10 @@ const TimeOverTimeComparison = () => {
                     <SamePeriodBulletChartExample/>
                 </div>
 
-                <hr className="separator" />
+                <hr className="separator" />*/}
 
                 <h2>Comparing to the previous period in head line</h2>
-                <PreviousPeriodHeadlineExample/>
+                <PreviousPeriodHeadlineExample/> 
             </div>
         </Page>
     );

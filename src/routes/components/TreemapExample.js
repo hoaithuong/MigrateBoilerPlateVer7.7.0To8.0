@@ -1,49 +1,20 @@
 // (C) 2007-2019 GoodData Corporation
-import React, { Component } from "react";
-import { Treemap, Model } from "@gooddata/react-components";
+import React from "react";
+import { Treemap } from "@gooddata/sdk-ui-charts";
+import { Ldm, LdmExt } from "../../ldm";
 
-import "@gooddata/react-components/styles/css/main.css";
+const style = { height: 300 };
 
-import {
-    numberOfChecksIdentifier,
-    locationCityDisplayFormIdentifier,
-    locationStateDisplayFormIdentifier,
-    projectId,
-} from "../utils/fixtures";
-
-const numberOfChecks = Model.measure(numberOfChecksIdentifier)
-    .format("#,##0")
-    .alias("# Checks");
-
-const locationState = Model.attribute(locationStateDisplayFormIdentifier);
-
-const locationCity = Model.attribute(locationCityDisplayFormIdentifier);
-
-export class TreeMapExample extends Component {
-    onLoadingChanged(...params) {
-        // eslint-disable-next-line no-console
-        console.info("TreeMapExample onLoadingChanged", ...params);
-    }
-
-    onError(...params) {
-        // eslint-disable-next-line no-console
-        console.info("TreeMapExample onLoadingChanged", ...params);
-    }
-
-    render() {
-        return (
-            <div style={{ height: 300 }} className="s-tree-map">
-                <Treemap
-                    projectId={projectId}
-                    measures={[numberOfChecks]}
-                    viewBy={locationState}
-                    segmentBy={locationCity}
-                    onLoadingChanged={this.onLoadingChanged}
-                    onError={this.onError}
-                />
-            </div>
-        );
-    }
-}
+export const TreeMapExample = () => {
+    return (
+        <div style={style} className="s-tree-map">
+            <Treemap
+                measures={[LdmExt.numberOfChecks]}
+                viewBy={Ldm.LocationState}
+                segmentBy={Ldm.LocationCity}
+            />
+        </div>
+    );
+};
 
 export default TreeMapExample;

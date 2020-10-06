@@ -1,65 +1,34 @@
 // (C) 2007-2019 GoodData Corporation
-import React, { Component } from "react";
-import { PivotTable, Model } from "@gooddata/react-components";
+import React from "react";
+import { Headline } from "@gooddata/sdk-ui-charts";
+import { newAbsoluteDateFilter } from "@gooddata/sdk-model";
 
-import "@gooddata/react-components/styles/css/main.css";
+import { ExampleWithExport } from "./utils/ExampleWithExport";
+import { LdmExt } from "../../ldm";
 
-import ExampleWithExport from "./utils/ExampleWithExport";
+const primaryMeasure = LdmExt.FranchiseFees;
 
-import {
-    dateDataSetUri,
-    projectId,
-    quarterDateIdentifier,
-    monthDateIdentifier,
-    locationStateDisplayFormIdentifier,
-    locationNameDisplayFormIdentifier,
-    franchiseFeesIdentifier,
-    franchiseFeesAdRoyaltyIdentifier,
-    franchiseFeesInitialFranchiseFeeIdentifier,
-    franchiseFeesIdentifierOngoingRoyalty,
-    menuCategoryAttributeDFIdentifier,
-} from "../utils/fixtures";
+const secondaryMeasure = LdmExt.FranchiseFeesAdRoyalty;
 
-const measures = [
-    Model.measure(franchiseFeesIdentifier).format("#,##0"),
-    Model.measure(franchiseFeesAdRoyaltyIdentifier).format("#,##0"),
-    Model.measure(franchiseFeesInitialFranchiseFeeIdentifier).format("#,##0"),
-    Model.measure(franchiseFeesIdentifierOngoingRoyalty).format("#,##0"),
-];
+const filters = [newAbsoluteDateFilter(LdmExt.dateDatasetIdentifier, "2017-01-01", "2017-12-31")];
 
-const attributes = [
-    Model.attribute(locationStateDisplayFormIdentifier),
-    Model.attribute(locationNameDisplayFormIdentifier),
-    Model.attribute(menuCategoryAttributeDFIdentifier).localIdentifier("menu"),
-];
+const style = { display: "flex" };
 
-const columns = [Model.attribute(quarterDateIdentifier), Model.attribute(monthDateIdentifier)];
+export const HeadlineExportExample = () => {
+    return (
+        <ExampleWithExport filters={filters}>
+            {(onExportReady) => (
+                <div className="s-headline" style={style}>
+                    <Headline
+                        primaryMeasure={primaryMeasure}
+                        secondaryMeasure={secondaryMeasure}
+                        filters={filters}
+                        onExportReady={onExportReady}
+                    />
+                </div>
+            )}
+        </ExampleWithExport>
+    );
+};
 
-const sortBy = [Model.attributeSortItem("menu", "asc")];
-
-const filters = [Model.absoluteDateFilter(dateDataSetUri, "2017-01-01", "2017-12-31")];
-
-export class PivotTableExportExample extends Component {
-    render() {
-        return (
-            <ExampleWithExport>
-                {onExportReady => (
-                    <div style={{ height: 300 }} className="s-pivot-table-sorting">
-                        <PivotTable
-                            projectId={projectId}
-                            measures={measures}
-                            rows={attributes}
-                            columns={columns}
-                            pageSize={20}
-                            sortBy={sortBy}
-                            filters={filters}
-                            onExportReady={onExportReady}
-                        />
-                    </div>
-                )}
-            </ExampleWithExport>
-        );
-    }
-}
-
-export default PivotTableExportExample;
+export default HeadlineExportExample;

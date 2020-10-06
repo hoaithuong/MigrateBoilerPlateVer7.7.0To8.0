@@ -1,7 +1,6 @@
 // (C) 2007-2019 GoodData Corporation
-import React, { Component } from "react";
-import { DateFilter } from "@gooddata/react-components";
-import "@gooddata/react-components/styles/css/dateFilter.css";
+import React, { useState } from "react";
+import { DateFilter } from "@gooddata/sdk-ui-filters";
 
 const dateFrom = new Date();
 dateFrom.setMonth(dateFrom.getMonth() - 1);
@@ -15,6 +14,7 @@ const defaultDateFilterOptions = {
         name: "",
         visible: true,
     },
+
     absoluteForm: {
         localIdentifier: "ABSOLUTE_FORM",
         type: "absoluteForm",
@@ -23,6 +23,7 @@ const defaultDateFilterOptions = {
         name: "",
         visible: true,
     },
+
     absolutePreset: [
         {
             from: "2019-12-24",
@@ -32,6 +33,7 @@ const defaultDateFilterOptions = {
             visible: true,
             type: "absolutePreset",
         },
+
         {
             from: "2018-01-01",
             to: "2018-12-31",
@@ -41,6 +43,7 @@ const defaultDateFilterOptions = {
             type: "absolutePreset",
         },
     ],
+
     relativeForm: {
         localIdentifier: "RELATIVE_FORM",
         type: "relativeForm",
@@ -51,6 +54,7 @@ const defaultDateFilterOptions = {
         visible: true,
         availableGranularities,
     },
+
     relativePreset: {
         "GDC.time.date": [
             {
@@ -62,6 +66,7 @@ const defaultDateFilterOptions = {
                 visible: true,
                 name: "",
             },
+
             {
                 from: -29,
                 to: 0,
@@ -71,6 +76,7 @@ const defaultDateFilterOptions = {
                 visible: true,
                 name: "",
             },
+
             {
                 from: -89,
                 to: 0,
@@ -81,6 +87,7 @@ const defaultDateFilterOptions = {
                 name: "",
             },
         ],
+
         "GDC.time.month": [
             {
                 from: 0,
@@ -91,6 +98,7 @@ const defaultDateFilterOptions = {
                 visible: true,
                 name: "",
             },
+
             {
                 from: -1,
                 to: -1,
@@ -100,6 +108,7 @@ const defaultDateFilterOptions = {
                 visible: true,
                 name: "",
             },
+
             {
                 from: -11,
                 to: 0,
@@ -110,6 +119,7 @@ const defaultDateFilterOptions = {
                 name: "",
             },
         ],
+
         "GDC.time.quarter": [
             {
                 from: 0,
@@ -120,6 +130,7 @@ const defaultDateFilterOptions = {
                 visible: true,
                 name: "",
             },
+
             {
                 from: -1,
                 to: -1,
@@ -129,6 +140,7 @@ const defaultDateFilterOptions = {
                 visible: true,
                 name: "",
             },
+
             {
                 from: -3,
                 to: 0,
@@ -139,6 +151,7 @@ const defaultDateFilterOptions = {
                 name: "",
             },
         ],
+
         "GDC.time.year": [
             {
                 from: 0,
@@ -149,6 +162,7 @@ const defaultDateFilterOptions = {
                 visible: true,
                 name: "",
             },
+
             {
                 from: -1,
                 to: -1,
@@ -162,64 +176,34 @@ const defaultDateFilterOptions = {
     },
 };
 
-export class DateFilterComponentExample extends Component {
-    constructor(props) {
-        super(props);
+const style = { width: 300 };
 
-        this.state = {
-            selectedFilterOption: defaultDateFilterOptions.allTime,
-            excludeCurrentPeriod: false,
-        };
-    }
+export const DateFilterComponentExample = () => {
+    const [state, setState] = useState({
+        selectedFilterOption: defaultDateFilterOptions.allTime,
+        excludeCurrentPeriod: false,
+    });
 
-    onOpen = () => {
-        // eslint-disable-next-line no-console
-        console.log("DateFilterExample onOpen");
-    };
-
-    onClose = () => {
-        // eslint-disable-next-line no-console
-        console.log("DateFilterExample onClose");
-    };
-
-    onApply = (selectedFilterOption, excludeCurrentPeriod) => {
-        this.setState({
+    const onApply = (selectedFilterOption, excludeCurrentPeriod) => {
+        setState({
             selectedFilterOption,
             excludeCurrentPeriod,
         });
-        // eslint-disable-next-line no-console
-        console.log(
-            "DateFilterExample onApply",
-            "selectedFilterOption:",
-            selectedFilterOption,
-            "excludeCurrentPeriod:",
-            excludeCurrentPeriod,
-        );
     };
 
-    onCancel = () => {
-        // eslint-disable-next-line no-console
-        console.log("DateFilterExample onCancel");
-    };
-
-    render() {
-        return (
-            <div style={{ width: 300 }}>
-                <DateFilter
-                    excludeCurrentPeriod={this.state.excludeCurrentPeriod}
-                    selectedFilterOption={this.state.selectedFilterOption}
-                    filterOptions={defaultDateFilterOptions}
-                    availableGranularities={availableGranularities}
-                    customFilterName="Selected date"
-                    dateFilterMode="active"
-                    onApply={this.onApply}
-                    onCancel={this.onCancel}
-                    onOpen={this.onOpen}
-                    onClose={this.onClose}
-                />
-            </div>
-        );
-    }
-}
+    return (
+        <div style={style}>
+            <DateFilter
+                excludeCurrentPeriod={state.excludeCurrentPeriod}
+                selectedFilterOption={state.selectedFilterOption}
+                filterOptions={defaultDateFilterOptions}
+                availableGranularities={availableGranularities}
+                customFilterName="Selected date"
+                dateFilterMode="active"
+                onApply={onApply}
+            />
+        </div>
+    );
+};
 
 export default DateFilterComponentExample;

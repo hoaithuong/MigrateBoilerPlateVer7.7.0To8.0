@@ -1,7 +1,7 @@
 import React from "react";
 
 import Page from "../components/Page";
-import { useProjectId } from "../contexts/ProjectId";
+// import { useProjectId } from "../contexts/ProjectId";
 
 import PivotTableDrillExample from "./components/PivotTableDrillExample";
 import PivotTableSortingExample from "./components/PivotTableSortingExample";
@@ -11,10 +11,10 @@ import PivotTableSubtotalsExample from "./components/PivotTableSubtotalsExample"
 import PivotTableSortingAggregationExample from "./components/PivotTableSortingAggregationExample";
 import PivotTableSizingExample from "./components/PivotTableSizingExample";
 import PivotTableColumnsGrowToFitExample from "./components/PivotTableColumnsGrowToFitExample";
-import PivotTableManualResizingExample from "./components/PivotTableManualResizingExample";
+// import PivotTableManualResizingExample from "./components/PivotTableManualResizingExample";
 
 const PivotTable = () => {
-    const { projectId } = useProjectId();
+    // const { projectId } = useProjectId();
     return (
         <Page>
             <div>
@@ -70,7 +70,7 @@ const PivotTable = () => {
                 <hr className="separator" />
                 
                 <h2 id="table-with-column-sizing">Example of pivot table with manual resizing</h2>
-                <PivotTableManualResizingExample/>
+                {/* <PivotTableManualResizingExample/> */}
             </div>
         </Page>
     );

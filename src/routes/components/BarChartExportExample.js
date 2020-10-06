@@ -1,47 +1,30 @@
-import React, { Component } from "react";
-import { BarChart, Model } from "@gooddata/react-components";
+import React from "react";
+import { BarChart } from "@gooddata/sdk-ui-charts";
+import { newAbsoluteDateFilter } from "@gooddata/sdk-model";
 
-import ExampleWithExport from "./utils/ExampleWithExport";
-import { dateDataSetUri, locationResortIdentifier, projectId, totalSalesIdentifier } from "../utils/fixtures";
+import { ExampleWithExport } from "./utils/ExampleWithExport";
+import { Ldm, LdmExt } from "../../ldm";
 
-export class BarChartExportExample extends Component {
-    onLoadingChanged(...params) {
-        // eslint-disable-next-line no-console
-        console.info("BarChartExportExample onLoadingChanged", ...params);
-    }
+const measures = [LdmExt.TotalSales1];
+const filters = [newAbsoluteDateFilter(LdmExt.dateDatasetIdentifier, "2017-01-01", "2017-12-31")];
 
-    onError(...params) {
-        // eslint-disable-next-line no-console
-        console.info("BarChartExportExample onLoadingChanged", ...params);
-    }
+const style = { height: 300 };
 
-    render() {
-        const amount = Model.measure(totalSalesIdentifier)
-            .format("#,##0")
-            .alias("$ Total Sales");
-
-        const locationResort = Model.attribute(locationResortIdentifier);
-
-        const filters = [Model.absoluteDateFilter(dateDataSetUri, "2017-01-01", "2017-12-31")];
-
-        return (
-            <ExampleWithExport>
-                {onExportReady => (
-                    <div style={{ height: 300 }} className="s-bar-chart">
-                        <BarChart
-                            projectId={projectId}
-                            measures={[amount]}
-                            viewBy={locationResort}
-                            filters={filters}
-                            onExportReady={onExportReady}
-                            onLoadingChanged={this.onLoadingChanged}
-                            onError={this.onError}
-                        />
-                    </div>
-                )}
-            </ExampleWithExport>
-        );
-    }
-}
+export const BarChartExportExample = () => {
+    return (
+        <ExampleWithExport filters={filters}>
+            {(onExportReady) => (
+                <div style={style} className="s-bar-chart">
+                    <BarChart
+                        measures={measures}
+                        viewBy={Ldm.LocationResort}
+                        filters={filters}
+                        onExportReady={onExportReady}
+                    />
+                </div>
+            )}
+        </ExampleWithExport>
+    );
+};
 
 export default BarChartExportExample;

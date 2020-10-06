@@ -1,65 +1,27 @@
 // (C) 2007-2019 GoodData Corporation
 
-import React, { Component } from "react";
-import { Table, Model } from "@gooddata/react-components";
+import React from "react";
+import { PivotTable } from "@gooddata/sdk-ui-pivot";
+import { newArithmeticMeasure } from "@gooddata/sdk-model";
+import { Ldm, LdmExt } from "../../ldm";
 
-import "@gooddata/react-components/styles/css/main.css";
+const averageRestaurantSales = newArithmeticMeasure(
+    [LdmExt.TotalSales2, LdmExt.NrRestaurants],
+    "ratio",
+    (m) => m.format("#,##0").title("$ Avg State Daily Sales")
+);
 
-import {
-    projectId,
-    locationStateDisplayFormIdentifier,
-    numberOfRestaurantsIdentifier,
-    totalSalesIdentifier,
-} from "../utils/fixtures";
+const measures = [LdmExt.TotalSales2, LdmExt.NrRestaurants, averageRestaurantSales];
 
-const localIdentifiers = {
-    numberOfRestaurants: "numberOfRestaurants",
-    averageRestaurantDailyCosts: "averageRestaurantDailyCosts",
-    averageRestaurantSales: "averageRestaurantSales",
+const rows = [Ldm.LocationState];
+const style = { height: 200 };
+
+export const ArithmeticMeasureRatioExample = () => {
+    return (
+        <div style={style} className="s-table">
+            <PivotTable measures={measures} rows={rows} />
+        </div>
+    );
 };
-
-const measures = [
-    Model.measure(totalSalesIdentifier)
-        .localIdentifier(localIdentifiers.averageRestaurantDailyCosts)
-        .format("#,##0"),
-    Model.measure(numberOfRestaurantsIdentifier)
-        .localIdentifier(localIdentifiers.numberOfRestaurants)
-        .format("#,##0"),
-    Model.arithmeticMeasure(
-        [localIdentifiers.averageRestaurantDailyCosts, localIdentifiers.numberOfRestaurants],
-        "ratio",
-    )
-        .localIdentifier(localIdentifiers.averageRestaurantSales)
-        .format("#,##0")
-        .title("$ Avg Restaurant Sales"),
-];
-
-const attributes = [Model.attribute(locationStateDisplayFormIdentifier).localIdentifier("month")];
-
-export class ArithmeticMeasureRatioExample extends Component {
-    onLoadingChanged(...params) {
-        // eslint-disable-next-line no-console
-        return console.log("ArithmeticMeasureRatioExample onLoadingChanged", ...params);
-    }
-
-    onError(...params) {
-        // eslint-disable-next-line no-console
-        return console.log("ArithmeticMeasureRatioExample onError", ...params);
-    }
-
-    render() {
-        return (
-            <div style={{ height: 200 }} className="s-table">
-                <Table
-                    projectId={projectId}
-                    measures={measures}
-                    attributes={attributes}
-                    onLoadingChanged={this.onLoadingChanged}
-                    onError={this.onError}
-                />
-            </div>
-        );
-    }
-}
 
 export default ArithmeticMeasureRatioExample;

@@ -1,18 +1,17 @@
 // (C) 2007-2018 GoodData Corporation
-import React, { Component } from "react";
-import "@gooddata/react-components/styles/css/main.css";
-import { Visualization } from "@gooddata/react-components";
+import React from "react";
+import { InsightView } from "@gooddata/sdk-ui-ext";
 
-import { projectId, pieVisualizationIdentifier } from "../utils/fixtures";
+import { Ldm } from "../../ldm";
 
-export class VisualizationTable extends Component {
-    render() {
-        return (
-            <div style={{ height: 300 }} className="s-visualization-pie">
-                <Visualization projectId={projectId} identifier={pieVisualizationIdentifier} />
-            </div>
-        );
-    }
-}
+const style = { height: 300 };
 
-export default VisualizationTable;
+export const InsightViewPieByIdentifierExample = () => {
+    return (
+        <div style={style} className="s-insightView-pie">
+            <InsightView insight={Ldm.Insights.PieChart} />
+        </div>
+    );
+};
+
+export default InsightViewPieByIdentifierExample;

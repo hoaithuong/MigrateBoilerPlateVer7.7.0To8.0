@@ -2,13 +2,16 @@
 import React from "react";
 
 import Page from "../components/Page";
-import { useProjectId } from "../contexts/ProjectId";
+// import { useProjectId } from "../contexts/ProjectId";
 
 import ExecuteExample from "./components/ExecuteExample";
-import ExecuteAttributeValuesExample from "./components/ExecuteAttributeValuesExample";
+import ExecuteWithSlicesExample from "./components/ExecuteWithSlicesExample";
+import ExecuteWithCustomVisualizationExample from "./components/ExecuteWithCustomVisualizationExample";
+import ExecuteRaw from "./components/ExecuteRaw";
+
 
 const Execute = () => {
-    const { projectId } = useProjectId();
+    // const { projectId } = useProjectId();
     return (
         <Page>
             <div>
@@ -32,7 +35,13 @@ const Execute = () => {
 
                 <hr className="separator" />
 
-                <ExecuteAttributeValuesExample/>
+                <ExecuteWithSlicesExample/>
+                <hr className="separator" />
+
+                <ExecuteWithCustomVisualizationExample/>
+                <hr className="separator" />
+
+                <ExecuteRaw/>
             </div>
         </Page>
     );

@@ -1,32 +1,18 @@
 // (C) 2007-2020 GoodData Corporation
 import React, { Component } from "react";
-import { BulletChart, Model } from "@gooddata/react-components";
+import { BulletChart } from "@gooddata/sdk-ui-charts";
 
-import "@gooddata/react-components/styles/css/main.css";
-
-import {
-    projectId,
-    franchiseFeesAdRoyaltyIdentifier,
-    franchiseFeesIdentifier,
-    franchiseFeesIdentifierOngoingRoyalty,
-    locationResortIdentifier,
-} from "../utils/fixtures";
-
-const primaryMeasure = Model.measure(franchiseFeesAdRoyaltyIdentifier).format("#,##0");
-const targetMeasure = Model.measure(franchiseFeesIdentifier).format("#,##0");
-const comparativeMeasure = Model.measure(franchiseFeesIdentifierOngoingRoyalty).format("#,##0");
-const locationResort = Model.attribute(locationResortIdentifier);
+import { LdmExt } from "../../ldm";
 
 export class BulletChartExample extends Component {
     render() {
         return (
             <div style={{ height: 300 }} className="s-bullet-chart">
                 <BulletChart
-                    projectId={projectId}
-                    primaryMeasure={primaryMeasure}
-                    targetMeasure={targetMeasure}
-                    comparativeMeasure={comparativeMeasure}
-                    viewBy={locationResort}
+                    primaryMeasure={LdmExt.FranchiseFeesAdRoyalty}
+                    targetMeasure={LdmExt.FranchiseFees}
+                    comparativeMeasure={LdmExt.FranchiseFeesOngoingRoyalty}
+                    viewBy={LdmExt.LocationResort}
                 />
             </div>
         );

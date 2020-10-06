@@ -1,18 +1,17 @@
 // (C) 2007-2020 GoodData Corporation
-import React, { Component } from "react";
-import "@gooddata/react-components/styles/css/main.css";
-import { Visualization } from "@gooddata/react-components";
+import React from "react";
+import { InsightView } from "@gooddata/sdk-ui-ext";
 
-import { projectId, bulletVisualizationIdentifier } from "../utils/fixtures";
+import { Ldm } from "../../ldm";
 
-export class VisualizationBulletByIdentifierExample extends Component {
-    render() {
-        return (
-            <div style={{ height: 300 }} className="s-visualization-bullet">
-                <Visualization projectId={projectId} identifier={bulletVisualizationIdentifier} />
-            </div>
-        );
-    }
-}
+const style = { height: 300 };
 
-export default VisualizationBulletByIdentifierExample;
+export const InsightViewBulletByIdentifierExample = () => {
+    return (
+        <div style={style} className="s-insightView-bubble">
+            <InsightView insight={Ldm.Insights.BulletChart} />
+        </div>
+    );
+};
+
+export default InsightViewBulletByIdentifierExample;

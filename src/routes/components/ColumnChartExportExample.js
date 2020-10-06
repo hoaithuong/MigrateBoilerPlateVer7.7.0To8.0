@@ -1,47 +1,68 @@
-import React, { Component } from "react";
-import { BarChart, Model } from "@gooddata/react-components";
+import React from "react";
+import { newAbsoluteDateFilter } from "@gooddata/sdk-model";
 
-import ExampleWithExport from "./utils/ExampleWithExport";
-import { dateDataSetUri, locationResortIdentifier, projectId, totalSalesIdentifier } from "../utils/fixtures";
+import { ExampleWithExport } from "./utils/ExampleWithExport";
+import { LdmExt } from "../../ldm";
+import { Execute, ErrorComponent, LoadingComponent } from "@gooddata/sdk-ui";
 
-export class BarChartExportExample extends Component {
-    onLoadingChanged(...params) {
-        // eslint-disable-next-line no-console
-        console.info("BarChartExportExample onLoadingChanged", ...params);
-    }
+const primaryMeasure = LdmExt.FranchiseFees;
+const filters = [newAbsoluteDateFilter(LdmExt.dateDatasetIdentifier, "2017-01-01", "2017-12-31")];
 
-    onError(...params) {
-        // eslint-disable-next-line no-console
-        console.info("BarChartExportExample onLoadingChanged", ...params);
-    }
+export const ExecuteExportExample = () => {
+    return (
+        <ExampleWithExport filters={filters}>
+            {(onExportReady) => {
+                return (
+                    <div>
+                        <Execute seriesBy={[primaryMeasure]} onExportReady={onExportReady} filters={filters}>
+                            {({ error, isLoading, result }) => {
+                                if (error) {
+                                    return (
+                                        <div>
+                                            <ErrorComponent message="There was an error getting your execution" />
+                                        </div>
+                                    );
+                                }
+                                if (isLoading || !result) {
+                                    return (
+                                        <div>
+                                            <div className="gd-message progress">
+                                                <div className="gd-message-text">Loading…</div>
+                                            </div>
+                                            <LoadingComponent />
+                                        </div>
+                                    );
+                                }
 
-    render() {
-        const amount = Model.measure(totalSalesIdentifier)
-            .format("#,##0")
-            .alias("$ Total Sales");
+                                const measureSeries = result.data().series().firstForMeasure(primaryMeasure);
 
-        const locationResort = Model.attribute(locationResortIdentifier);
-
-        const filters = [Model.absoluteDateFilter(dateDataSetUri, "2017-01-01", "2017-12-31")];
-
-        return (
-            <ExampleWithExport>
-                {onExportReady => (
-                    <div style={{ height: 300 }} className="s-bar-chart">
-                        <BarChart
-                            projectId={projectId}
-                            measures={[amount]}
-                            viewBy={locationResort}
-                            filters={filters}
-                            onExportReady={onExportReady}
-                            onLoadingChanged={this.onLoadingChanged}
-                            onError={this.onError}
-                        />
+                                return (
+                                    <div>
+                                        <style jsx>
+                                            {`
+                                                .kpi {
+                                                    height: 60px;
+                                                    margin: 10px 0;
+                                                    font-size: 50px;
+                                                    line-height: 60px;
+                                                    white-space: nowrap;
+                                                    vertical-align: bottom;
+                                                    font-weight: 700;
+                                                }
+                                            `}
+                                        </style>
+                                        <p className="kpi s-execute-kpi">
+                                            {measureSeries.dataPoints()[0].formattedValue()}
+                                        </p>
+                                    </div>
+                                );
+                            }}
+                        </Execute>
                     </div>
-                )}
-            </ExampleWithExport>
-        );
-    }
-}
+                );
+            }}
+        </ExampleWithExport>
+    );
+};
 
-export default BarChartExportExample;
+export default ExecuteExportExample;

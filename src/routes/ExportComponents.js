@@ -3,10 +3,10 @@ import Page from "../components/Page";
 import BarChartExportExample from "./components/BarChartExportExample";
 import ExportTableExample from "./components/ExportTableExample";
 import ExportVisualizationExample from "./components/ExportVisualizationExample";
-import VisualizationPivotTableByUriExample from "./components/VisualizationPivotTableByUriExample";
+// import VisualizationPivotTableByUriExample from "./components/VisualizationPivotTableByUriExample";
 import ColumnChartExportExample from "./components/ColumnChartExportExample";
-import VisualizationHeadlineByUriExample from "./components/VisualizationHeadlineByUriExample";
-import VisualizationComboByIdentifierExample from "./components/VisualizationComboByIdentifierExample";
+// import VisualizationHeadlineByUriExample from "./components/VisualizationHeadlineByUriExample";
+// import VisualizationComboByIdentifierExample from "./components/VisualizationComboByIdentifierExample";
 import PivotTableExportExample from "./components/PivotTableExportExample";
 
 const ExportComponents = () => {
@@ -19,7 +19,7 @@ const ExportComponents = () => {
             </p>
             <div>
                 <h3>Export Chart Data</h3>
-                <BarChartExportExample />
+                {/* <BarChartExportExample /> */}
                 <br />
             </div>
 
@@ -27,43 +27,43 @@ const ExportComponents = () => {
 
             <div>
                 <h3>Export Table</h3>
-                <ExportTableExample />
+                {/* <ExportTableExample /> */}
                 <br />
             </div>
 
             <hr className="separator" />
 
             <div>
-                <h3>Export Visualization</h3>
-                <ExportVisualizationExample />
+                {/* <h3>Export Visualization</h3> */}
+                {/* <ExportVisualizationExample /> */}
             </div>
 
             <hr className="separator" />
 
             <div>
                 <h3>Export Visualization Pivot Table</h3>
-                <VisualizationPivotTableByUriExample />
+                {/* <VisualizationPivotTableByUriExample /> */}
             </div>
 
             <hr className="separator" />
 
             <div>
                 <h3>Export Visualization ColumnChart</h3>
-                <ColumnChartExportExample />
+                {/* <ColumnChartExportExample /> */}
             </div>
 
             <hr className="separator" />
 
             <div>
                 <h3>Export Visualization Headline</h3>
-                <VisualizationHeadlineByUriExample />
+                {/* <VisualizationHeadlineByUriExample /> */}
             </div>
 
             <hr className="separator" />
 
             <div>
                 <h3>Export Visualization ComboChart</h3>
-                <VisualizationComboByIdentifierExample />
+                {/* <VisualizationComboByIdentifierExample /> */}
             </div>
 
             <hr className="separator" />

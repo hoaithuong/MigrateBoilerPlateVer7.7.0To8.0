@@ -1,26 +1,24 @@
-// (C) 2007-2019 GoodData Corporation
 import React, { Component } from "react";
-import { Headline, Model } from "@gooddata/react-components";
 
-import "@gooddata/react-components/styles/css/main.css";
-
-import { projectId, franchiseFeesIdentifier, franchiseFeesAdRoyaltyIdentifier } from "../utils/fixtures";
-
-const primaryMeasure = Model.measure(franchiseFeesIdentifier).format("#,##0");
-const secondaryMeasure = Model.measure(franchiseFeesAdRoyaltyIdentifier).format("#,##0");
+import { Headline } from "@gooddata/sdk-ui-charts";
+import { LdmExt } from "../../ldm";
 
 export class HeadlineExample extends Component {
-    onLoadingChanged(...params) {
+    onLoadingChanged = (...params) => {
         // eslint-disable-next-line no-console
         return console.log("ColumnChartExample onLoadingChanged", ...params);
-    }
+    };
 
-    onError(...params) {
+    onError = (...params) => {
         // eslint-disable-next-line no-console
         return console.log("ColumnChartExample onError", ...params);
-    }
+    };
 
     render() {
+        const primaryMeasure = LdmExt.FranchiseFees;
+
+        const secondaryMeasure = LdmExt.FranchiseFeesAdRoyalty;
+
         return (
             <div className="s-headline" style={{ display: "flex" }}>
                 <style jsx>
@@ -32,7 +30,6 @@ export class HeadlineExample extends Component {
                 </style>
                 <div className="column">
                     <Headline
-                        projectId={projectId}
                         primaryMeasure={primaryMeasure}
                         onLoadingChanged={this.onLoadingChanged}
                         onError={this.onError}
@@ -40,7 +37,6 @@ export class HeadlineExample extends Component {
                 </div>
                 <div className="column">
                     <Headline
-                        projectId={projectId}
                         primaryMeasure={primaryMeasure}
                         secondaryMeasure={secondaryMeasure}
                         onLoadingChanged={this.onLoadingChanged}

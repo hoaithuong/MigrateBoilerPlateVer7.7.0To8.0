@@ -1,29 +1,30 @@
 // (C) 2007-2020 GoodData Corporation
 import React from "react";
-import { PivotTable, Model, MeasureValueFilter } from "@gooddata/react-components";
+import { MeasureValueFilter } from "@gooddata/sdk-ui-filters";
+import { measureLocalId } from "@gooddata/sdk-model";
+import { PivotTable } from "@gooddata/sdk-ui-pivot";
 
-import "@gooddata/react-components/styles/css/main.css";
-import { projectId, franchisedSalesIdentifier, locationNameDisplayFormIdentifier } from "../utils/fixtures";
+import { LdmExt } from "../../ldm";
 
 const measureTitle = "Franchised Sales in %";
 
-const franchisedSalesMeasure = Model.measure(franchisedSalesIdentifier)
-    .localIdentifier("franchisedSales")
-    .title(measureTitle)
-    .ratio();
-const measures = [franchisedSalesMeasure];
+const measures = [LdmExt.FranchisedSalesWithRatio];
 
-const attributes = [Model.attribute(locationNameDisplayFormIdentifier).localIdentifier("locationName")];
+const attributes = [LdmExt.LocationName];
 
-const defaultMeasureValueFilter = Model.measureValueFilter("franchisedSales");
+const defaultFilter = {
+    measureValueFilter: {
+        measure: measures,
+    },
+};
 
 export class MeasureValueFilterComponentRatioExample extends React.PureComponent {
     state = {
-        filters: [defaultMeasureValueFilter],
+        filters: [],
     };
 
-    onApply = filter => {
-        this.setState({ filters: [filter] });
+    onApply = (filter) => {
+        this.setState({ filters: [filter ?? defaultFilter] });
     };
 
     render() {
@@ -35,15 +36,12 @@ export class MeasureValueFilterComponentRatioExample extends React.PureComponent
                     filter={filters[0]}
                     buttonTitle={measureTitle}
                     warningMessage="The filter uses actual measure values, not percentage."
+                    measureIdentifier={measureLocalId(LdmExt.FranchisedSalesWithRatio)}
                 />
+
                 <hr className="separator" />
                 <div style={{ height: 300 }} className="s-pivot-table">
-                    <PivotTable
-                        projectId={projectId}
-                        measures={measures}
-                        rows={attributes}
-                        filters={filters}
-                    />
+                    <PivotTable measures={measures} rows={attributes} filters={filters} />
                 </div>
             </React.Fragment>
         );

@@ -1,45 +1,20 @@
 // (C) 2007-2019 GoodData Corporation
-import React, { Component } from "react";
-import { ScatterPlot, Model } from "@gooddata/react-components";
+import React from "react";
+import { ScatterPlot } from "@gooddata/sdk-ui-charts";
+import { Ldm, LdmExt } from "../../ldm";
 
-import "@gooddata/react-components/styles/css/main.css";
+const xMeasure = LdmExt.FranchiseFees;
 
-import {
-    projectId,
-    franchiseFeesIdentifier,
-    franchisedSalesIdentifier,
-    locationResortIdentifier,
-} from "../utils/fixtures";
+const yMeasure = LdmExt.FranchisedSales;
 
-const xMeasure = Model.measure(franchiseFeesIdentifier).format("#,##0");
-const yMeasure = Model.measure(franchisedSalesIdentifier).format("#,##0");
-const locationResort = Model.attribute(locationResortIdentifier);
+const style = { height: 300 };
 
-export class ScatterPlotExample extends Component {
-    onLoadingChanged(...params) {
-        // eslint-disable-next-line no-console
-        console.log("ScatterPlotExample onLoadingChanged", ...params);
-    }
-
-    onError(...params) {
-        // eslint-disable-next-line no-console
-        console.log("ScatterPlotExample onError", ...params);
-    }
-
-    render() {
-        return (
-            <div style={{ height: 300 }} className="s-scatter-plot">
-                <ScatterPlot
-                    projectId={projectId}
-                    xAxisMeasure={xMeasure}
-                    yAxisMeasure={yMeasure}
-                    attribute={locationResort}
-                    onLoadingChanged={this.onLoadingChanged}
-                    onError={this.onError}
-                />
-            </div>
-        );
-    }
-}
+export const ScatterPlotExample = () => {
+    return (
+        <div style={style} className="s-scatter-plot">
+            <ScatterPlot xAxisMeasure={xMeasure} yAxisMeasure={yMeasure} attribute={Ldm.LocationResort} />
+        </div>
+    );
+};
 
 export default ScatterPlotExample;

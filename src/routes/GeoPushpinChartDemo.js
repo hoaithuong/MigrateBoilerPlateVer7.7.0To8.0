@@ -2,7 +2,7 @@
 import React from "react";
 
 import Page from "../components/Page";
-import { useProjectId } from "../contexts/ProjectId";
+// import { useProjectId } from "../contexts/ProjectId";
 
 import GeoPushpinChartClusteringExample from "./components/GeoPushpinChartClusteringExample";
 import GeoPushpinChartWithColorLegendExample from "./components/GeoPushpinChartWithColorLegendExample";
@@ -15,7 +15,7 @@ import GeoPushpinChartConfigurationPointsSizeExample from "./components/GeoPushp
 import GeoPushpinChartConfigurationPointsGroupNearbyExample from "./components/GeoPushpinChartConfigurationPointsGroupNearbyExample";
 
 const GeoPushpinChartDemo = () => {
-    const { projectId } = useProjectId();
+    // const { projectId } = useProjectId();
     return (
         <Page>
             <div>

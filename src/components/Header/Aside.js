@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import cx from "classnames";
 
 import styles from "./Header.module.scss";
-import { useAuth } from "../../contexts/Auth";
+import { useAuth } from "../../context/auth";
 import InlineLoading from "../InlineLoading";
 
 const Aside = () => {

@@ -1,123 +1,99 @@
 // (C) 2007-2020 GoodData Corporation
 import React, { Component } from "react";
-import { LineChart, AttributeFilter, Model, ErrorComponent } from "@gooddata/react-components";
-import { VisualizationInput } from "@gooddata/typings";
-
-import "@gooddata/react-components/styles/css/main.css";
-
+import { ErrorComponent } from "@gooddata/sdk-ui";
+import { AttributeFilter } from "@gooddata/sdk-ui-filters";
+import { LineChart } from "@gooddata/sdk-ui-charts";
 import {
-    totalSalesIdentifier,
-    locationResortIdentifier,
-    locationResortUri,
-    locationResortDisplayFormUri,
-    projectId,
-} from "../utils/fixtures";
-
-const totalSales = Model.measure(totalSalesIdentifier)
-    .format("#,##0")
-    .alias("$ Total Sales");
-
-const locationResort = Model.attribute(locationResortIdentifier);
+    attributeIdentifier,
+    isAttributeElementsByRef,
+    isPositiveAttributeFilter,
+} from "@gooddata/sdk-model";
+import { Ldm, LdmExt } from "../../ldm";
 
 export class AttributeFilterExample extends Component {
-    constructor(props) {
-        super(props);
+    state = {
+        filters: [],
+        error: undefined,
+    };
 
-        this.state = {
-            // you can put here some attr. elements as a default selection for filter and chart components
-            filters: [Model.negativeAttributeFilter(locationResortIdentifier, [])],
-            error: null,
-        };
-    }
-
-    onLoadingChanged(...params) {
+    onLoadingChanged = (...params) => {
         // eslint-disable-next-line no-console
         console.info("AttributeFilterExample onLoadingChanged", ...params);
-    }
+    };
 
-    onApply = filter => {
+    onApply = (filter) => {
         // eslint-disable-next-line no-console
         console.log("AttributeFilterExample onApply", filter);
-        this.setState({ filters: [], error: null });
-        if (filter.in) {
+        this.setState({ filters: [], error: undefined });
+        if (isPositiveAttributeFilter(filter)) {
             this.filterPositiveAttribute(filter);
         } else {
             this.filterNegativeAttribute(filter);
         }
     };
 
-    onApplyWithFilterDefinition = filter => {
+    onError = (...params) => {
         // eslint-disable-next-line no-console
-        console.log("AttributeFilterExample onApplyWithFilterDefinition", filter);
-        const isPositiveFilter = VisualizationInput.isPositiveAttributeFilter(filter);
-        const inType = isPositiveFilter ? "in" : "notIn";
-        const filterItems = isPositiveFilter
-            ? filter.positiveAttributeFilter[inType]
-            : filter.negativeAttributeFilter[inType];
+        console.info("AttributeFilterExample onLoadingChanged", ...params);
+    };
 
-        if (!filterItems.length && isPositiveFilter) {
+    filterPositiveAttribute(filter) {
+        let filters;
+        const {
+            positiveAttributeFilter,
+            positiveAttributeFilter: { displayForm },
+        } = filter;
+        const inElements = filter.positiveAttributeFilter.in;
+        const checkLengthOfFilter = isAttributeElementsByRef(positiveAttributeFilter.in)
+            ? positiveAttributeFilter.in.uris.length !== 0
+            : positiveAttributeFilter.in.values.length !== 0;
+        if (checkLengthOfFilter) {
+            filters = [
+                {
+                    positiveAttributeFilter: {
+                        displayForm,
+                        in: inElements,
+                    },
+                },
+            ];
+        } else {
             this.setState({
                 error: "The filter must have at least one item selected",
             });
-        } else {
-            this.setState({ filters: [filter], error: null });
         }
-    };
-
-    onError(...params) {
-        // eslint-disable-next-line no-console
-        console.info("AttributeFilterExample onLoadingChanged", ...params);
-    }
-
-    filterPositiveAttribute(filter) {
-        const filters = [
-            {
-                positiveAttributeFilter: {
-                    displayForm: {
-                        identifier: filter.id,
-                    },
-                    in: filter.in.map(element => `${locationResortUri}/elements?id=${element}`),
-                },
-            },
-        ];
-        let error = null;
-        if (filter.in.length === 0) {
-            error = "The filter must have at least one item selected";
-        }
-        this.setState({ filters, error });
+        this.setState({ filters });
     }
 
     filterNegativeAttribute(filter) {
-        const filters = [
-            {
-                negativeAttributeFilter: {
-                    displayForm: {
-                        identifier: filter.id,
+        let filters;
+        const {
+            negativeAttributeFilter: { notIn, displayForm },
+        } = filter;
+        const checkLengthOfFilter = isAttributeElementsByRef(notIn)
+            ? notIn.uris.length !== 0
+            : notIn.values.length !== 0;
+        if (checkLengthOfFilter) {
+            filters = [
+                {
+                    negativeAttributeFilter: {
+                        displayForm,
+                        notIn,
                     },
-                    notIn: filter.notIn.map(element => `${locationResortUri}/elements?id=${element}`),
                 },
-            },
-        ];
+            ];
+        }
         this.setState({ filters });
     }
 
     render() {
         const { filters, error } = this.state;
+
         return (
             <div className="s-attribute-filter">
-                <p>Attribute Filter by values</p>
                 <AttributeFilter
-                    projectId={projectId}
-                    filter={filters[0]}
+                    identifier={attributeIdentifier(Ldm.LocationResort)}
+                    fullscreenOnMobile={false}
                     onApply={this.onApply}
-                    onApplyWithFilterDefinition={this.onApplyWithFilterDefinition}
-                />
-
-                <p>Attribute Filter by uris</p>
-                <AttributeFilter
-                    uri={locationResortDisplayFormUri}
-                    onApply={this.onApply}
-                    onApplyWithFilterDefinition={this.onApplyWithFilterDefinition}
                 />
 
                 <div style={{ height: 300 }} className="s-line-chart">
@@ -125,9 +101,8 @@ export class AttributeFilterExample extends Component {
                         <ErrorComponent message={error} />
                     ) : (
                         <LineChart
-                            projectId={projectId}
-                            measures={[totalSales]}
-                            trendBy={locationResort}
+                            measures={[LdmExt.TotalSales2]}
+                            trendBy={Ldm.LocationResort}
                             filters={filters}
                             onLoadingChanged={this.onLoadingChanged}
                             onError={this.onError}

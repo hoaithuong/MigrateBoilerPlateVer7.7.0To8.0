@@ -1,18 +1,18 @@
 // (C) 2007-2018 GoodData Corporation
-import React, { Component } from "react";
-import "@gooddata/react-components/styles/css/main.css";
-import { Visualization } from "@gooddata/react-components";
+import React from "react";
 
-import { projectId, scatterVisualizationIdentifier } from "../utils/fixtures";
+import { InsightView } from "@gooddata/sdk-ui-ext";
 
-export class VisualizationTable extends Component {
-    render() {
-        return (
-            <div style={{ height: 300 }} className="s-visualization-scatter">
-                <Visualization projectId={projectId} identifier={scatterVisualizationIdentifier} />
-            </div>
-        );
-    }
-}
+import { Ldm } from "../../ldm";
 
-export default VisualizationTable;
+const style = { height: 300 };
+
+export const InsightViewScatterByIdentifierExample = () => {
+    return (
+        <div style={style} className="s-insightView-scatter">
+            <InsightView insight={Ldm.Insights.ScatterChart} />
+        </div>
+    );
+};
+
+export default InsightViewScatterByIdentifierExample;

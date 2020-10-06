@@ -1,45 +1,45 @@
 // (C) 2007-2020 GoodData Corporation
 import React from "react";
-import { PivotTable, Model, MeasureValueFilter } from "@gooddata/react-components";
+import { measureLocalId } from "@gooddata/sdk-model";
+import { MeasureValueFilter } from "@gooddata/sdk-ui-filters";
+import { PivotTable } from "@gooddata/sdk-ui-pivot";
 
-import "@gooddata/react-components/styles/css/main.css";
-import { projectId, franchisedSalesIdentifier, locationNameDisplayFormIdentifier } from "../utils/fixtures";
+import { LdmExt } from "../../ldm";
 
 const measureTitle = "Franchised Sales";
+const measures = [LdmExt.FranchisedSales];
 
-const franchisedSalesMeasure = Model.measure(franchisedSalesIdentifier)
-    .format("#,##0")
-    .localIdentifier("franchisedSales")
-    .title(measureTitle);
+const attributes = [LdmExt.LocationName];
 
-const measures = [franchisedSalesMeasure];
-
-const attributes = [Model.attribute(locationNameDisplayFormIdentifier).localIdentifier("locationName")];
-
-const defaultMeasureValueFilter = Model.measureValueFilter("franchisedSales");
+const defaultFilter = {
+    measureValueFilter: {
+        measure: measures,
+    },
+};
 
 export class MeasureValueFilterComponentExample extends React.PureComponent {
     state = {
-        filters: [defaultMeasureValueFilter],
+        filters: [],
     };
 
-    onApply = filter => {
-        this.setState({ filters: [filter] });
+    onApply = (filter) => {
+        this.setState({ filters: [filter ?? defaultFilter] });
     };
 
     render() {
         const { filters } = this.state;
         return (
             <React.Fragment>
-                <MeasureValueFilter onApply={this.onApply} filter={filters[0]} buttonTitle={measureTitle} />
+                <MeasureValueFilter
+                    onApply={this.onApply}
+                    filter={filters[0]}
+                    buttonTitle={measureTitle}
+                    measureIdentifier={measureLocalId(LdmExt.FranchisedSales)}
+                />
+
                 <hr className="separator" />
                 <div style={{ height: 300 }} className="s-pivot-table">
-                    <PivotTable
-                        projectId={projectId}
-                        measures={measures}
-                        rows={attributes}
-                        filters={filters}
-                    />
+                    <PivotTable measures={measures} rows={attributes} filters={filters} />
                 </div>
             </React.Fragment>
         );

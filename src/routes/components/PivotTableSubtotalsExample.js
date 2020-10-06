@@ -1,86 +1,67 @@
 // (C) 2007-2019 GoodData Corporation
-import React, { Component } from "react";
-import { PivotTable, Model } from "@gooddata/react-components";
+import React from "react";
+import { PivotTable } from "@gooddata/sdk-ui-pivot";
 
-import "@gooddata/react-components/styles/css/main.css";
-
-import {
-    projectId,
-    quarterDateIdentifier,
-    monthDateIdentifier,
-    locationStateDisplayFormIdentifier,
-    locationNameDisplayFormIdentifier,
-    franchiseFeesIdentifier,
-    franchiseFeesAdRoyaltyIdentifier,
-    franchiseFeesInitialFranchiseFeeIdentifier,
-    franchiseFeesIdentifierOngoingRoyalty,
-    menuCategoryAttributeDFIdentifier,
-} from "../utils/fixtures";
+import { Ldm, LdmExt } from "../../ldm";
 
 const measures = [
-    Model.measure(franchiseFeesIdentifier)
-        .format("#,##0")
-        .localIdentifier("franchiseFeesIdentifier"),
-    Model.measure(franchiseFeesAdRoyaltyIdentifier)
-        .format("#,##0")
-        .localIdentifier("franchiseFeesAdRoyaltyIdentifier"),
-    Model.measure(franchiseFeesInitialFranchiseFeeIdentifier).format("#,##0"),
-    Model.measure(franchiseFeesIdentifierOngoingRoyalty).format("#,##0"),
+    LdmExt.FranchiseFees,
+    LdmExt.FranchiseFeesAdRoyalty,
+    LdmExt.FranchiseFeesInitialFranchiseFee,
+    LdmExt.FranchiseFeesOngoingRoyalty,
 ];
 
-const attributes = [
-    Model.attribute(locationStateDisplayFormIdentifier),
-    Model.attribute(locationNameDisplayFormIdentifier).localIdentifier("locationName"),
-    Model.attribute(menuCategoryAttributeDFIdentifier).localIdentifier("menu"),
-];
-
+const attributes = [Ldm.LocationState, LdmExt.LocationName, LdmExt.MenuCategory];
 const totals = [
     {
-        measureIdentifier: "franchiseFeesIdentifier",
+        measureIdentifier: "franchiseFees",
         type: "sum",
         attributeIdentifier: "locationName",
     },
+
     {
-        measureIdentifier: "franchiseFeesIdentifier",
+        measureIdentifier: "franchiseFees",
         type: "avg",
         attributeIdentifier: "locationName",
     },
+
     {
-        measureIdentifier: "franchiseFeesAdRoyaltyIdentifier",
+        measureIdentifier: "franchiseFeesOngoingRoyalty",
         type: "sum",
         attributeIdentifier: "menu",
     },
+
     {
-        measureIdentifier: "franchiseFeesIdentifier",
+        measureIdentifier: "franchiseFees",
         type: "max",
         attributeIdentifier: "menu",
     },
 ];
 
-const columns = [Model.attribute(quarterDateIdentifier), Model.attribute(monthDateIdentifier)];
+const columns = [Ldm.DateQuarter, Ldm.DateMonth.Short];
+const config = {
+    menu: {
+        aggregations: true,
+        aggregationsSubMenu: true,
+    },
+};
 
-export class PivotTableSubtotalsExample extends Component {
-    render() {
-        return (
-            <div style={{ height: 500 }} className="s-pivot-table-row-grouping">
-                <PivotTable
-                    projectId={projectId}
-                    measures={measures}
-                    config={{
-                        menu: {
-                            aggregations: true,
-                            aggregationsSubMenu: true,
-                        },
-                    }}
-                    rows={attributes}
-                    columns={columns}
-                    totals={totals}
-                    pageSize={20}
-                    groupRows
-                />
-            </div>
-        );
-    }
-}
+const style = { height: 500 };
+
+export const PivotTableSubtotalsExample = () => {
+    return (
+        <div style={style} className="s-pivot-table-row-grouping">
+            <PivotTable
+                measures={measures}
+                config={config}
+                rows={attributes}
+                columns={columns}
+                totals={totals}
+                pageSize={20}
+                groupRows
+            />
+        </div>
+    );
+};
 
 export default PivotTableSubtotalsExample;

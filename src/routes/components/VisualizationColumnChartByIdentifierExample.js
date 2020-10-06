@@ -1,18 +1,17 @@
 // (C) 2007-2019 GoodData Corporation
-import React, { Component } from "react";
-import "@gooddata/react-components/styles/css/main.css";
-import { Visualization } from "@gooddata/react-components";
+import React from "react";
+import { InsightView } from "@gooddata/sdk-ui-ext";
 
-import { projectId, columnVisualizationIdentifier } from "../utils/fixtures";
+import { Ldm } from "../../ldm";
 
-export class VisualizationColumnChartByIdentifierExample extends Component {
-    render() {
-        return (
-            <div style={{ height: 300 }} className="s-visualization-chart">
-                <Visualization projectId={projectId} identifier={columnVisualizationIdentifier} />
-            </div>
-        );
-    }
-}
+const style = { height: 300 };
 
-export default VisualizationColumnChartByIdentifierExample;
+export const InsightViewColumnChartByIdentifierExample = () => {
+    return (
+        <div style={style} className="s-insightView-chart">
+            <InsightView insight={Ldm.Insights.SalesOverTime} />
+        </div>
+    );
+};
+
+export default InsightViewColumnChartByIdentifierExample;

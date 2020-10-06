@@ -1,18 +1,16 @@
 // (C) 2007-2018 GoodData Corporation
-import React, { Component } from "react";
-import "@gooddata/react-components/styles/css/main.css";
-import { Visualization } from "@gooddata/react-components";
+import React from "react";
+import { InsightView } from "@gooddata/sdk-ui-ext";
 
-import { projectId, barVisualizationIdentifier } from "../utils/fixtures";
+import { Ldm } from "../../ldm";
 
-export class VisualizationTable extends Component {
-    render() {
-        return (
-            <div style={{ height: 300 }} className="s-visualization-bar">
-                <Visualization projectId={projectId} identifier={barVisualizationIdentifier} />
-            </div>
-        );
-    }
-}
+const style = { height: 300 };
 
-export default VisualizationTable;
+export const InsightViewBarByIdentifierExample = () => {
+    return (
+        <div style={style} className="s-insightView-bar">
+            <InsightView insight={Ldm.Insights.BarChart} />
+        </div>
+    );
+};
+export default InsightViewBarByIdentifierExample;

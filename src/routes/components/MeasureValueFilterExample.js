@@ -1,33 +1,20 @@
 // (C) 2007-2020 GoodData Corporation
 import React, { Component } from "react";
-import { PivotTable, Model } from "@gooddata/react-components";
+import { PivotTable } from "@gooddata/sdk-ui-pivot";
+import { newMeasureValueFilter } from "@gooddata/sdk-model";
+import { LdmExt } from "../../ldm";
 
-import "@gooddata/react-components/styles/css/main.css";
-import { projectId, locationNameDisplayFormIdentifier, franchisedSalesIdentifier } from "../utils/fixtures";
+const measures = [LdmExt.FranchisedSales];
 
-const measures = [
-    Model.measure(franchisedSalesIdentifier)
-        .format("#,##0")
-        .localIdentifier("franchiseSales")
-        .title("Franchise Sales"),
-];
+const attributes = [LdmExt.LocationName];
+const greaterThanFilter = newMeasureValueFilter(LdmExt.FranchisedSales, "GREATER_THAN", 7000000);
 
-const attributes = [Model.attribute(locationNameDisplayFormIdentifier).localIdentifier("locationName")];
-const greaterThanFilter = Model.measureValueFilter("franchiseSales").condition("GREATER_THAN", {
-    value: 7000000,
-});
-const betweenFilter = Model.measureValueFilter("franchiseSales").condition("BETWEEN", {
-    from: 5000000,
-    to: 8000000,
-});
+const betweenFilter = newMeasureValueFilter(LdmExt.FranchisedSales, "BETWEEN", 5000000, 8000000);
 
 export class FilterByValueExample extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            filters: [],
-        };
-    }
+    state = {
+        filters: [],
+    };
 
     renderPresetButton(label, appliedFilters, isActive) {
         return (
@@ -53,22 +40,18 @@ export class FilterByValueExample extends Component {
                     {this.renderPresetButton(
                         "Franchise sales greater than 7,000,000",
                         [greaterThanFilter],
-                        filters[0] === greaterThanFilter,
+                        filters[0] === greaterThanFilter
                     )}
+
                     {this.renderPresetButton(
                         "Franchise sales between 5,000,000 and 8,000,000",
                         [betweenFilter],
-                        filters[0] === betweenFilter,
+                        filters[0] === betweenFilter
                     )}
                 </div>
                 <hr className="separator" />
                 <div style={{ height: 300 }} className="s-pivot-table">
-                    <PivotTable
-                        projectId={projectId}
-                        measures={measures}
-                        rows={attributes}
-                        filters={filters}
-                    />
+                    <PivotTable measures={measures} rows={attributes} filters={filters} />
                 </div>
             </div>
         );

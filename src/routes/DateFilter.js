@@ -2,13 +2,13 @@
 import React from "react";
 
 import Page from "../components/Page";
-import { useProjectId } from "../contexts/ProjectId";
+// import { useProjectId } from "../contexts/ProjectId";
 
 import DateFilterComponentExample from "./components/DateFilterComponentExample";
 import DateFilterWithColumnChartExample from "./components/DateFilterWithColumnChartExample";
 
 const DateFilter = () => {
-    const { projectId } = useProjectId();
+    // const { projectId } = useProjectId();
     return (
         <Page>
             <div>

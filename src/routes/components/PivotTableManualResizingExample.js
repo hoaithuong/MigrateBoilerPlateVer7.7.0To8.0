@@ -1,46 +1,41 @@
 // (C) 2020 GoodData Corporation
 import React, { Component } from "react";
-import { Model, PivotTable } from "@gooddata/react-components";
-
-import "@gooddata/react-components/styles/css/main.css";
-
 import {
-    projectId,
-    quarterDateIdentifier,
-    locationStateDisplayFormIdentifier,
-    franchiseFeesIdentifier,
-} from "../utils/fixtures";
+    PivotTable,
+    newWidthForAttributeColumn,
+    newWidthForSelectedColumns,
+    newAttributeColumnLocator,
+} from "@gooddata/sdk-ui-pivot";
+import { LdmExt } from "../../ldm";
+import { workspace } from "../../constants/fixtures";
 
-const measures = [
-    Model.measure(franchiseFeesIdentifier)
-        .format("#,##0")
-        .localIdentifier("franchiseFees"),
-];
+const measures = [LdmExt.FranchiseFees];
 
-const attributes = [Model.attribute(locationStateDisplayFormIdentifier).localIdentifier("state")];
+const attributes = [LdmExt.LocationState];
 
-const columns = [Model.attribute(quarterDateIdentifier).localIdentifier("quarterDate")];
+const columns = [LdmExt.quarterDate];
 
-const attributeWidth = width => Model.attributeColumnWidthItem("state", width);
+const attributeWidth = (width) => newWidthForAttributeColumn(attributes[0], width);
 
-const measureWidth = width =>
-    Model.measureColumnWidthItem("franchiseFees", width).attributeLocators({
-        attributeIdentifier: "quarterDate",
-        element: `/gdc/md/${projectId}/obj/2009/elements?id=1`,
-    });
+const measureWidth = (width) =>
+    newWidthForSelectedColumns(
+        LdmExt.FranchiseFees,
+        [newAttributeColumnLocator(LdmExt.quarterDate, `/gdc/md/${workspace}/obj/2009/elements?id=1`)],
+        width
+    );
 
 export class PivotTableManualResizingExample extends Component {
     state = {
         columnWidths: [measureWidth(200), attributeWidth(200)],
     };
 
-    onButtonClick = columnWidthItem => {
+    onButtonClick = (columnWidthItem) => {
         this.setState({
             columnWidths: [columnWidthItem],
         });
     };
 
-    onColumnResized = columnWidths => {
+    onColumnResized = (columnWidths) => {
         this.setState({ columnWidths });
     };
 
@@ -72,7 +67,6 @@ export class PivotTableManualResizingExample extends Component {
                     className="s-pivot-table-manual-resizing"
                 >
                     <PivotTable
-                        projectId={projectId}
                         measures={measures}
                         rows={attributes}
                         columns={columns}
@@ -80,6 +74,7 @@ export class PivotTableManualResizingExample extends Component {
                             columnSizing: {
                                 columnWidths: [...this.state.columnWidths],
                             },
+
                             menu: {
                                 aggregations: true,
                                 aggregationsSubMenu: true,

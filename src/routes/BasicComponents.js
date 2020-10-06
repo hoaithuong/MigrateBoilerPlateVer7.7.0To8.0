@@ -1,7 +1,7 @@
 import React from "react";
 
 import Page from "../components/Page";
-import { useProjectId } from "../contexts/ProjectId";
+// import { useProjectId } from "../contexts/ProjectId";
 
 import AreaChartExample from "./components/AreaChartExample";
 import BarChartExample from "./components/BarChartExample";
@@ -16,13 +16,13 @@ import BubbleChartExample from "./components/BubbleChartExample";
 import BulletChartExample from "./components/BulletChartExample";
 import TreemapExample from "./components/TreemapExample";
 import HeatmapExample from "./components/HeatmapExample";
-import TableExample from "./components/TableExample";
+// import TableExample from "./components/TableExample";
 import HeadlineExample from "./components/HeadlineExample";
 import KpiExample from "./components/KpiExample";
 import GeoPushpinChartWithCategoryLegendExample from "./components/GeoPushpinChartWithCategoryLegendExample";
 
 const BasicComponents = () => {
-    const { projectId } = useProjectId();
+    // const { projectId } = useProjectId();
     return (
         <Page>
             <div>
@@ -98,10 +98,10 @@ const BasicComponents = () => {
                 <h2 id="heatmap">Heatmap</h2>
                 <HeatmapExample/>
 
-                <hr className="separator" />
+                {/* <hr className="separator" />
 
                 <h2 id="table">Table</h2>
-                <TableExample/>
+                <TableExample/> */}
 
                 <hr className="separator" />
 

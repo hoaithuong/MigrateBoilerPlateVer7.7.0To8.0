@@ -1,54 +1,27 @@
-// (C) 2007-2019 GoodData Corporation
-import React, { Component } from "react";
-import { LineChart, Model } from "@gooddata/react-components";
+import React from "react";
+import { LineChart } from "@gooddata/sdk-ui-charts";
 
-import "@gooddata/react-components/styles/css/main.css";
+import { Ldm, LdmExt } from "../../ldm";
 
-import {
-    projectId,
-    monthDateIdentifier,
-    franchiseFeesIdentifier,
-    franchiseFeesAdRoyaltyIdentifier,
-    franchiseFeesInitialFranchiseFeeIdentifier,
-    franchiseFeesIdentifierOngoingRoyalty,
-} from "../utils/fixtures";
-
-import { CUSTOM_COLOR_PALETTE } from "../utils/colors";
+import { CUSTOM_COLOR_PALETTE } from "../../constants/colors";
 
 const measures = [
-    Model.measure(franchiseFeesIdentifier).format("#,##0"),
-    Model.measure(franchiseFeesAdRoyaltyIdentifier).format("#,##0"),
-    Model.measure(franchiseFeesInitialFranchiseFeeIdentifier).format("#,##0"),
-    Model.measure(franchiseFeesIdentifierOngoingRoyalty).format("#,##0"),
+    LdmExt.FranchiseFees,
+    LdmExt.FranchiseFeesAdRoyalty,
+    LdmExt.FranchiseFeesInitialFranchiseFee,
+    LdmExt.FranchiseFeesOngoingRoyalty,
 ];
 
-const trendBy = Model.attribute(monthDateIdentifier);
+const chartConfig = { colorPalette: CUSTOM_COLOR_PALETTE };
 
-export class LineChartExample extends Component {
-    onLoadingChanged(...params) {
-        // eslint-disable-next-line no-console
-        return console.log("LineChartExample onLoadingChanged", ...params);
-    }
+const style = { height: 300 };
 
-    onError(...params) {
-        // eslint-disable-next-line no-console
-        return console.log("LineChartExample onError", ...params);
-    }
-
-    render() {
-        return (
-            <div style={{ height: 300 }} className="s-line-chart">
-                <LineChart
-                    projectId={projectId}
-                    measures={measures}
-                    trendBy={trendBy}
-                    onLoadingChanged={this.onLoadingChanged}
-                    onError={this.onError}
-                    config={{ colorPalette: CUSTOM_COLOR_PALETTE }}
-                />
-            </div>
-        );
-    }
-}
+export const LineChartExample = () => {
+    return (
+        <div style={style} className="s-line-chart">
+            <LineChart measures={measures} trendBy={Ldm.DateMonth.Short} config={chartConfig} />
+        </div>
+    );
+};
 
 export default LineChartExample;

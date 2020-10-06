@@ -4,7 +4,7 @@ import Logo from "./Logo";
 
 import styles from "./Header.module.scss";
 import Aside from "./Aside";
-import { useAuth } from "../../contexts/Auth";
+import { useAuth } from "../../context/auth";
 // uncomment the next line to use ProjectPicker
 // import ProjectPicker from "../controls/ProjectPicker";
 

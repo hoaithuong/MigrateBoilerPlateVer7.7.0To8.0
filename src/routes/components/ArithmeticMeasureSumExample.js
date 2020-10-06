@@ -1,73 +1,34 @@
 // (C) 2007-2019 GoodData Corporation
 
-import React, { Component } from "react";
-import { Table, Model } from "@gooddata/react-components";
+import React from "react";
+import { PivotTable } from "@gooddata/sdk-ui-pivot";
+import { newArithmeticMeasure } from "@gooddata/sdk-model";
+import { Ldm, LdmExt } from "../../ldm";
 
-import "@gooddata/react-components/styles/css/main.css";
+const sum = newArithmeticMeasure(
+    [LdmExt.FranchiseFeesOngoingRoyalty, LdmExt.FranchiseFeesAdRoyalty],
+    "sum",
+    (m) => m.format("#,##0").title("$ Ongoing / Ad Royalty Sum")
+);
 
-import {
-    projectId,
-    franchiseFeesAdRoyaltyIdentifier,
-    franchiseFeesIdentifierOngoingRoyalty,
-    locationStateDisplayFormIdentifier,
-} from "../utils/fixtures";
+const difference = newArithmeticMeasure(
+    [LdmExt.FranchiseFeesOngoingRoyalty, LdmExt.FranchiseFeesAdRoyalty],
+    "difference",
+    (m) => m.format("#,##0").title("$ Ongoing / Ad Royalty Difference")
+);
 
-const localIdentifiers = {
-    franchiseFeesAdRoyalty: "franchiseFeesAdRoyalty",
-    franchiseFeesOngoingRoyalty: "franchiseFeesOngoingRoyalty",
-    franchiseFeesSum: "franchiseFeesSum",
-    franchiseFeesDifference: "franchiseFeesDifference",
+const measures = [LdmExt.FranchiseFeesAdRoyalty, LdmExt.FranchiseFeesOngoingRoyalty, sum, difference];
+
+const rows = [Ldm.LocationState];
+
+const style = { height: 200 };
+
+export const ArithmeticMeasureSumExample = () => {
+    return (
+        <div style={style} className="s-table">
+            <PivotTable measures={measures} rows={rows} />
+        </div>
+    );
 };
-
-const measures = [
-    Model.measure(franchiseFeesAdRoyaltyIdentifier)
-        .localIdentifier(localIdentifiers.franchiseFeesAdRoyalty)
-        .format("#,##0"),
-    Model.measure(franchiseFeesIdentifierOngoingRoyalty)
-        .localIdentifier(localIdentifiers.franchiseFeesOngoingRoyalty)
-        .format("#,##0"),
-    Model.arithmeticMeasure(
-        [localIdentifiers.franchiseFeesOngoingRoyalty, localIdentifiers.franchiseFeesAdRoyalty],
-        "sum",
-    )
-        .localIdentifier(localIdentifiers.franchiseFeesSum)
-        .format("#,##0")
-        .title("$ Ongoing / Ad Royalty Sum"),
-    Model.arithmeticMeasure(
-        [localIdentifiers.franchiseFeesOngoingRoyalty, localIdentifiers.franchiseFeesAdRoyalty],
-        "difference",
-    )
-        .localIdentifier(localIdentifiers.franchiseFeesDifference)
-        .format("#,##0")
-        .title("$ Ongoing / Ad Royalty Difference"),
-];
-
-const attributes = [Model.attribute(locationStateDisplayFormIdentifier).localIdentifier("month")];
-
-export class ArithmeticMeasureSumExample extends Component {
-    onLoadingChanged(...params) {
-        // eslint-disable-next-line no-console
-        return console.log("ArithmeticMeasureSumExample onLoadingChanged", ...params);
-    }
-
-    onError(...params) {
-        // eslint-disable-next-line no-console
-        return console.log("ArithmeticMeasureSumExample onError", ...params);
-    }
-
-    render() {
-        return (
-            <div style={{ height: 200 }} className="s-table">
-                <Table
-                    projectId={projectId}
-                    measures={measures}
-                    attributes={attributes}
-                    onLoadingChanged={this.onLoadingChanged}
-                    onError={this.onError}
-                />
-            </div>
-        );
-    }
-}
 
 export default ArithmeticMeasureSumExample;

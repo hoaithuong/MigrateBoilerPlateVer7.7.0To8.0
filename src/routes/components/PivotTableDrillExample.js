@@ -1,107 +1,91 @@
 // (C) 2007-2019 GoodData Corporation
 import React, { Component } from "react";
-import { PivotTable, HeaderPredicateFactory, Model } from "@gooddata/react-components";
+import { PivotTable } from "@gooddata/sdk-ui-pivot";
+import { HeaderPredicates } from "@gooddata/sdk-ui";
+import { attributeIdentifier, measureIdentifier } from "@gooddata/sdk-model";
 
-import "@gooddata/react-components/styles/css/main.css";
-
-import {
-    projectId,
-    quarterDateIdentifier,
-    monthDateIdentifier,
-    locationStateDisplayFormIdentifier,
-    locationNameDisplayFormIdentifier,
-    franchiseFeesIdentifier,
-    franchiseFeesAdRoyaltyIdentifier,
-    franchiseFeesInitialFranchiseFeeIdentifier,
-    franchiseFeesIdentifierOngoingRoyalty,
-    menuCategoryAttributeDFIdentifier,
-} from "../utils/fixtures";
+import { LdmExt, Ldm } from "../../ldm";
 
 const measures = [
-    Model.measure(franchiseFeesIdentifier)
-        .format("#,##0")
-        .localIdentifier("franchiseFeesIdentifier"),
-    Model.measure(franchiseFeesAdRoyaltyIdentifier)
-        .format("#,##0")
-        .localIdentifier("franchiseFeesAdRoyaltyIdentifier"),
-    Model.measure(franchiseFeesInitialFranchiseFeeIdentifier)
-        .format("#,##0")
-        .localIdentifier("franchiseFeesInitialFranchiseFeeIdentifier"),
-    Model.measure(franchiseFeesIdentifierOngoingRoyalty)
-        .format("#,##0")
-        .localIdentifier("franchiseFeesIdentifierOngoingRoyalty"),
+    LdmExt.FranchiseFees,
+    LdmExt.FranchiseFeesAdRoyalty,
+    LdmExt.FranchiseFeesOngoingRoyalty,
+    LdmExt.FranchiseFeesInitialFranchiseFee,
 ];
 
-const attributes = [
-    Model.attribute(locationStateDisplayFormIdentifier).localIdentifier("state"),
-    Model.attribute(locationNameDisplayFormIdentifier).localIdentifier("name"),
-    Model.attribute(menuCategoryAttributeDFIdentifier).localIdentifier("menu"),
-];
+const attributes = [LdmExt.LocationState, LdmExt.LocationName, LdmExt.MenuCategory];
 
-const columns = [Model.attribute(quarterDateIdentifier), Model.attribute(monthDateIdentifier)];
+const columns = [LdmExt.quarterDate, LdmExt.monthDate];
 
 const totals = [
     {
-        measureIdentifier: "franchiseFeesIdentifier",
+        measureIdentifier: "franchiseFees",
         type: "sum",
         attributeIdentifier: "state",
     },
+
     {
-        measureIdentifier: "franchiseFeesAdRoyaltyIdentifier",
+        measureIdentifier: "franchiseFeesAdRoyalty",
         type: "sum",
         attributeIdentifier: "state",
     },
+
     {
-        measureIdentifier: "franchiseFeesIdentifier",
+        measureIdentifier: "franchiseFees",
         type: "max",
         attributeIdentifier: "state",
     },
+
     {
-        measureIdentifier: "franchiseFeesIdentifier",
+        measureIdentifier: "franchiseFees",
         type: "sum",
         attributeIdentifier: "menu",
     },
+
     {
-        measureIdentifier: "franchiseFeesAdRoyaltyIdentifier",
+        measureIdentifier: "franchiseFeesAdRoyalty",
         type: "sum",
         attributeIdentifier: "menu",
     },
 ];
 
 const drillableItems = [
-    HeaderPredicateFactory.identifierMatch(menuCategoryAttributeDFIdentifier),
-    HeaderPredicateFactory.identifierMatch(franchiseFeesIdentifier),
+    HeaderPredicates.identifierMatch(attributeIdentifier(Ldm.MenuCategory)),
+    HeaderPredicates.identifierMatch(measureIdentifier(Ldm.$FranchiseFees)),
 ];
 
 export class PivotTableDrillExample extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            drillEvent: null,
-        };
-    }
+    state = {
+        drillEvent: null,
+    };
 
-    onDrill = drillEvent => {
+    onDrill = (drillEvent) => {
         // eslint-disable-next-line no-console
         console.log(
             "onFiredDrillEvent",
             drillEvent,
-            JSON.stringify(drillEvent.drillContext.intersection, null, 2),
+            JSON.stringify(drillEvent.drillContext.intersection, null, 2)
         );
+
         this.setState({
             drillEvent,
         });
+
         return true;
     };
 
-    renderDrillValue() {
+    renderDrillValue = () => {
         const { drillEvent } = this.state;
 
         if (!drillEvent) {
             return null;
         }
 
-        const drillColumn = drillEvent.drillContext.row[drillEvent.drillContext.columnIndex];
+        const drillColumn =
+            drillEvent.drillContext.row && drillEvent.drillContext.columnIndex
+                ? drillEvent.drillContext.row[drillEvent.drillContext.columnIndex]
+                : undefined;
+
         const drillValue = typeof drillColumn === "object" ? drillColumn.name : drillColumn;
 
         return (
@@ -109,21 +93,20 @@ export class PivotTableDrillExample extends Component {
                 You have Clicked <span className="s-drill-value">{drillValue}</span>{" "}
             </h3>
         );
-    }
+    };
 
     render() {
         return (
             <div>
                 {this.renderDrillValue()}
-                <div style={{ height: 500 }} className="s-pivot-table-drill">
+                <div style={{ height: 600 }} className="s-pivot-table-drill">
                     <PivotTable
-                        projectId={projectId}
                         measures={measures}
                         rows={attributes}
                         columns={columns}
                         pageSize={20}
                         drillableItems={drillableItems}
-                        onFiredDrillEvent={this.onDrill}
+                        onDrill={this.onDrill}
                         totals={totals}
                     />
                 </div>

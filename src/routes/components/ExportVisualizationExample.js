@@ -1,36 +1,28 @@
-import React, { Component } from "react";
-import { Visualization } from "@gooddata/react-components";
-import { projectId, columnVisualizationUri } from "../utils/fixtures";
+import React from "react";
 
-import ExampleWithExport from "./utils/ExampleWithExport";
+import { InsightView } from "@gooddata/sdk-ui-ext";
+import { newAbsoluteDateFilter } from "@gooddata/sdk-model";
+import { ExampleWithExport } from "./utils/ExampleWithExport";
+import { Ldm, LdmExt } from "../../ldm";
 
-export class ExportVisualizationExample extends Component {
-    onLoadingChanged(...params) {
-        // eslint-disable-next-line no-console
-        console.info("ExportVisualizationExample onLoadingChanged", ...params);
-    }
+const filters = [newAbsoluteDateFilter(LdmExt.dateDatasetIdentifier, "2017-01-01", "2017-12-31")];
 
-    onError(...params) {
-        // eslint-disable-next-line no-console
-        console.info("ExportVisualizationExample onLoadingChanged", ...params);
-    }
-    render() {
-        return (
-            <ExampleWithExport>
-                {onExportReady => (
-                    <div style={{ height: 300 }} className="s-bar-chart">
-                        <Visualization
-                            projectId={projectId}
-                            uri={columnVisualizationUri}
-                            onExportReady={onExportReady}
-                            onLoadingChanged={this.onLoadingChanged}
-                            onError={this.onError}
-                        />
-                    </div>
-                )}
-            </ExampleWithExport>
-        );
-    }
-}
+const style = { height: 300 };
 
-export default ExportVisualizationExample;
+export const insightViewColumnChartExportExample = () => {
+    return (
+        <ExampleWithExport>
+            {(onExportReady) => (
+                <div style={style} className="s-insightView-chart">
+                    <InsightView
+                        insight={Ldm.Insights.PieChart}
+                        filters={filters}
+                        onExportReady={onExportReady}
+                    />
+                </div>
+            )}
+        </ExampleWithExport>
+    );
+};
+
+export default insightViewColumnChartExportExample;

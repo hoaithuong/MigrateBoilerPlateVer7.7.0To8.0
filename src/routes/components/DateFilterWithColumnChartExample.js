@@ -1,19 +1,11 @@
 // (C) 2007-2019 GoodData Corporation
-import React, { Component } from "react";
-import { DateFilter, ColumnChart, Model, DateFilterHelpers } from "@gooddata/react-components";
-import "@gooddata/react-components/styles/css/dateFilter.css";
-import {
-    totalSalesIdentifier,
-    projectId,
-    dateDatasetIdentifier,
-    monthDateIdentifier,
-} from "../utils/fixtures";
+import React, { useState } from "react";
+import { DateFilter, DateFilterHelpers } from "@gooddata/sdk-ui-filters";
+import { ColumnChart } from "@gooddata/sdk-ui-charts";
 
-const amountMeasure = Model.measure(totalSalesIdentifier)
-    .format("#,##0")
-    .alias("$ Total Sales");
+import { Ldm, LdmExt } from "../../ldm";
 
-const monthAttribute = Model.attribute(monthDateIdentifier);
+const measures = [LdmExt.TotalSales1];
 
 const availableGranularities = ["GDC.time.year"];
 
@@ -24,6 +16,7 @@ const defaultDateFilterOptions = {
         name: "",
         visible: true,
     },
+
     absoluteForm: {
         localIdentifier: "ABSOLUTE_FORM",
         type: "absoluteForm",
@@ -32,6 +25,7 @@ const defaultDateFilterOptions = {
         name: "",
         visible: true,
     },
+
     absolutePreset: [
         {
             from: "2015-01-01",
@@ -41,6 +35,7 @@ const defaultDateFilterOptions = {
             visible: true,
             type: "absolutePreset",
         },
+
         {
             from: "2016-01-01",
             to: "2016-12-31",
@@ -49,6 +44,7 @@ const defaultDateFilterOptions = {
             visible: true,
             type: "absolutePreset",
         },
+
         {
             from: "2017-01-01",
             to: "2017-12-31",
@@ -58,6 +54,7 @@ const defaultDateFilterOptions = {
             type: "absolutePreset",
         },
     ],
+
     relativeForm: {
         localIdentifier: "RELATIVE_FORM",
         type: "relativeForm",
@@ -68,6 +65,7 @@ const defaultDateFilterOptions = {
         visible: true,
         availableGranularities,
     },
+
     relativePreset: {
         "GDC.time.year": [
             {
@@ -79,6 +77,7 @@ const defaultDateFilterOptions = {
                 visible: true,
                 name: "2 years ago",
             },
+
             {
                 from: -3,
                 to: -3,
@@ -88,6 +87,7 @@ const defaultDateFilterOptions = {
                 visible: true,
                 name: "3 years ago",
             },
+
             {
                 from: -4,
                 to: -4,
@@ -101,57 +101,53 @@ const defaultDateFilterOptions = {
     },
 };
 
-export class DateFilterComponentExample extends Component {
-    constructor(props) {
-        super(props);
+const dateFilterContainerStyle = { width: 200 };
+const columnChartContainerStyle = { height: 300 };
 
-        this.state = {
-            selectedFilterOption: defaultDateFilterOptions.allTime,
-            excludeCurrentPeriod: false,
-        };
-    }
+export const DateFilterWithColumnChartExample = () => {
+    const [state, setState] = useState({
+        selectedFilterOption: defaultDateFilterOptions.allTime,
+        excludeCurrentPeriod: false,
+    });
 
-    onApply = (dateFilterOption, excludeCurrentPeriod) => {
-        this.setState({
-            selectedFilterOption: dateFilterOption,
+    const onApply = (selectedFilterOption, excludeCurrentPeriod) => {
+        setState({
+            selectedFilterOption,
             excludeCurrentPeriod,
         });
     };
 
-    render() {
-        const dateFilter = DateFilterHelpers.mapOptionToAfm(
-            this.state.selectedFilterOption,
-            {
-                identifier: dateDatasetIdentifier,
-            },
-            this.state.excludeCurrentPeriod,
-        );
+    const dateFilter = DateFilterHelpers.mapOptionToAfm(
+        state.selectedFilterOption,
+        {
+            identifier: LdmExt.dateDatasetIdentifier,
+        },
 
-        return (
-            <div>
-                <div style={{ width: 200 }}>
-                    <DateFilter
-                        excludeCurrentPeriod={this.state.excludeCurrentPeriod}
-                        selectedFilterOption={this.state.selectedFilterOption}
-                        filterOptions={defaultDateFilterOptions}
-                        availableGranularities={availableGranularities}
-                        customFilterName="Selected date range"
-                        dateFilterMode="active"
-                        onApply={this.onApply}
-                    />
-                </div>
-                <div style={{ height: 300 }}>
-                    <ColumnChart
-                        projectId={projectId}
-                        measures={[amountMeasure]}
-                        viewBy={monthAttribute}
-                        onLoadingChanged={this.onLoadingChanged}
-                        filters={dateFilter ? [dateFilter] : []}
-                    />
-                </div>
+        state.excludeCurrentPeriod
+    );
+
+    return (
+        <div>
+            <div style={dateFilterContainerStyle}>
+                <DateFilter
+                    excludeCurrentPeriod={state.excludeCurrentPeriod}
+                    selectedFilterOption={state.selectedFilterOption}
+                    filterOptions={defaultDateFilterOptions}
+                    availableGranularities={availableGranularities}
+                    customFilterName="Selected date range"
+                    dateFilterMode="active"
+                    onApply={onApply}
+                />
             </div>
-        );
-    }
-}
+            <div style={columnChartContainerStyle}>
+                <ColumnChart
+                    measures={measures}
+                    viewBy={Ldm.DateMonth.Short}
+                    filters={dateFilter ? [dateFilter] : []}
+                />
+            </div>
+        </div>
+    );
+};
 
-export default DateFilterComponentExample;
+export default DateFilterWithColumnChartExample;

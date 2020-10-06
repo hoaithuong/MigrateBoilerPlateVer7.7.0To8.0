@@ -1,8 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
-import "@gooddata/react-components/styles/css/main.css";
+import { BackendProvider, WorkspaceProvider } from "@gooddata/sdk-ui";
+import { workspace } from "../constants/fixtures";
+import { useAuth } from "../context/auth";
+// import "@gooddata/react-components/styles/css/main.css";
 
-import { ProjectIdProvider } from "../contexts/ProjectId";
+// import { ProjectIdProvider } from "../contexts/ProjectId";
 import Login from "./Login";
 import Logout from "./Logout";
 import BasicComponents from "./BasicComponents";
@@ -17,12 +20,12 @@ import MeasureValueFilter from "./MeasureValueFilter";
 import ArithmeticMeasure from "./ArithmeticMeasure";
 import Execute from "./Execute";
 import ExportComponents from "./ExportComponents";
-import DrillingDemo from "./Drilling";
+// import DrillingDemo from "./Drilling";
 import Page from "../components/Page";
 
 import styles from "./AppRouter.module.scss";
 // Uncomment these lines if you want to redirect unauthorized users to login form
-// import { useAuth } from "../contexts/Auth";
+// import { useAuth } from "../context/auth";
 // const RedirectIfNotLoggedIn = () => {
 //     const auth = useAuth();
 //     const user = auth.data;
@@ -32,11 +35,14 @@ import styles from "./AppRouter.module.scss";
 // };
 
 const AppRouter = () => {
+    const { backend } = useAuth();
     return (
         <div className={styles.AppRouter}>
-            <Router>
+            <BackendProvider backend={backend}>
+    <WorkspaceProvider workspace={workspace}>
+          <Router>
                 {/* ProjectIdProvider depends on Router so it must be nested */}
-                <ProjectIdProvider>
+                {/* <ProjectIdProvider> */}
                     <Route exact path="/" component={BasicComponents} />
                     <Route exact path="/pivot-table" component={PivotTable} />
                     <Route exact path="/geo-pushpin-chart" component={GeoPushpinChartDemo} />
@@ -49,15 +55,17 @@ const AppRouter = () => {
                     <Route exact path="/arithmetic-measures" component={ArithmeticMeasure} />
                     <Route exact path="/execute" component={Execute} />
                     <Route exact path="/export" component={ExportComponents} />
-                    <Route exact path="/drill" component={DrillingDemo} />
+                    {/* <Route exact path="/drill" component={DrillingDemo} /> */}
                     <Route exact path="/dashboard" component={() => <Page>Dashboard</Page>} />
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/logout" component={Logout} />
                     {/* DELETE THIS LINE  */} <Redirect to="/" />
                     {/* Uncomment the next line if you want to redirect unauthorized users to login form */}
                     {/* <RedirectIfNotLoggedIn /> */}
-                </ProjectIdProvider>
-            </Router>
+                {/* </ProjectIdProvider> */}
+                </Router>
+    </WorkspaceProvider>
+</BackendProvider>
         </div>
     );
 };

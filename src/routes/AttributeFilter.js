@@ -2,14 +2,14 @@
 import React from "react";
 
 import Page from "../components/Page";
-import { useProjectId } from "../contexts/ProjectId";
+// import { useProjectId } from "../contexts/ProjectId";
 
 import AttributeFilterComponentExample from "./components/AttributeFilterComponentExample";
 import AttributeElementsExample from "./components/AttributeElementsExample";
 import AttributeFilterExample from "./components/AttributeFilterExample";
 
 const AttributeFilter = () => {
-    const { projectId } = useProjectId();
+    // const { projectId } = useProjectId();
     return (
         <Page>
             <div>

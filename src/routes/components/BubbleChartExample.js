@@ -1,51 +1,25 @@
 // (C) 2007-2019 GoodData Corporation
-import React, { Component } from "react";
-import { BubbleChart, Model } from "@gooddata/react-components";
+import React from "react";
+import { BubbleChart } from "@gooddata/sdk-ui-charts";
+import { Ldm, LdmExt } from "../../ldm";
 
-import "@gooddata/react-components/styles/css/main.css";
+const xMeasure = LdmExt.FranchiseFees;
 
-import {
-    projectId,
-    franchiseFeesIdentifier,
-    franchisedSalesIdentifier,
-    averageCheckSizeByServer,
-    locationResortIdentifier,
-} from "../utils/fixtures";
+const yMeasure = LdmExt.FranchisedSales;
 
-const xMeasure = Model.measure(franchiseFeesIdentifier).format("#,##0");
+const style = { height: 300 };
 
-const yMeasure = Model.measure(franchisedSalesIdentifier).format("#,##0");
-
-const size = Model.measure(averageCheckSizeByServer);
-
-const locationResort = Model.attribute(locationResortIdentifier);
-
-export class BubbleChartExample extends Component {
-    onLoadingChanged(...params) {
-        // eslint-disable-next-line no-console
-        console.log("BubbleChartExample onLoadingChanged", ...params);
-    }
-
-    onError(...params) {
-        // eslint-disable-next-line no-console
-        console.log("BubbleChartExample onError", ...params);
-    }
-
-    render() {
-        return (
-            <div style={{ height: 300 }} className="s-bubble-chart">
-                <BubbleChart
-                    projectId={projectId}
-                    xAxisMeasure={xMeasure}
-                    yAxisMeasure={yMeasure}
-                    viewBy={locationResort}
-                    size={size}
-                    onLoadingChanged={this.onLoadingChanged}
-                    onError={this.onError}
-                />
-            </div>
-        );
-    }
-}
+export const BubbleChartExample = () => {
+    return (
+        <div style={style} className="s-bubble-chart">
+            <BubbleChart
+                xAxisMeasure={xMeasure}
+                yAxisMeasure={yMeasure}
+                viewBy={Ldm.LocationResort}
+                size={Ldm.AvgCheckSizeByServer}
+            />
+        </div>
+    );
+};
 
 export default BubbleChartExample;

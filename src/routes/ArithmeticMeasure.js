@@ -3,7 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import Page from "../components/Page";
-import { useProjectId } from "../contexts/ProjectId";
+// import { useProjectId } from "../contexts/ProjectId";
 
 import ArithmeticMeasureSumExample from "./components/ArithmeticMeasureSumExample";
 import ArithmeticMeasureMultiplicationExample from "./components/ArithmeticMeasureMultiplicationExample";
@@ -12,7 +12,7 @@ import ArithmeticMeasureChangeExample from "./components/ArithmeticMeasureChange
 import ArithmeticMeasureDrillingExample from "./components/ArithmeticMeasureDrillingExample";
 
 const ArithmeticMeasure = () => {
-    const { projectId } = useProjectId();
+    // const { projectId } = useProjectId();
     return (
         <Page>
             <div>

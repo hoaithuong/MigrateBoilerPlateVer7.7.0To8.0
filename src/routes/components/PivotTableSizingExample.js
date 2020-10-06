@@ -1,45 +1,33 @@
 // (C) 2007-2020 GoodData Corporation
-import React, { Component } from "react";
-import { Model, PivotTable } from "@gooddata/react-components";
+import React from "react";
+import { PivotTable } from "@gooddata/sdk-ui-pivot";
 
-import "@gooddata/react-components/styles/css/main.css";
+import { LdmExt } from "../../ldm";
 
-import {
-    employeeNameIdentifier,
-    franchisedSalesIdentifier,
-    locationNameDisplayFormIdentifier,
-    projectId,
-} from "../utils/fixtures";
+const measures = [LdmExt.FranchisedSales];
 
-const measures = [
-    Model.measure(franchisedSalesIdentifier)
-        .format("#,##0")
-        .alias("Sales"),
-];
+const attributes = [LdmExt.EmployeeName];
 
-const attributes = [Model.attribute(employeeNameIdentifier)];
+const columns = [LdmExt.LocationName];
 
-const columns = [Model.attribute(locationNameDisplayFormIdentifier).localIdentifier("location")];
+const config = {
+    columnSizing: {
+        defaultWidth: "viewport",
+    },
+};
 
-export class PivotTableSizingExample extends Component {
-    render() {
-        return (
-            <div style={{ height: 300 }} className="s-pivot-table-sizing">
-                <PivotTable
-                    projectId={projectId}
-                    measures={measures}
-                    rows={attributes}
-                    columns={columns}
-                    config={{
-                        columnSizing: {
-                            defaultWidth: "viewport",
-                        },
-                    }}
-                    pageSize={20}
-                />
-            </div>
-        );
-    }
-}
+export const PivotTableSizingExample = () => {
+    return (
+        <div style={{ height: 300 }} className="s-pivot-table-sizing">
+            <PivotTable
+                measures={measures}
+                rows={attributes}
+                columns={columns}
+                config={config}
+                pageSize={20}
+            />
+        </div>
+    );
+};
 
 export default PivotTableSizingExample;

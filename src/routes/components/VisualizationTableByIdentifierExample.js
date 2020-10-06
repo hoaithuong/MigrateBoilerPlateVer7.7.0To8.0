@@ -1,26 +1,17 @@
 // (C) 2007-2019 GoodData Corporation
-import React, { Component } from "react";
-import "@gooddata/react-components/styles/css/main.css";
-import { Visualization } from "@gooddata/react-components";
+import React from "react";
 
-import { projectId, tableVisualizationIdentifier } from "../utils/fixtures";
+import { InsightView } from "@gooddata/sdk-ui-ext";
 
-export class VisualizationTable extends Component {
-    render() {
-        return (
-            <div style={{ height: 300 }} className="s-visualization-table">
-                <Visualization
-                    projectId={projectId}
-                    identifier={tableVisualizationIdentifier}
-                    config={{
-                        menu: {
-                            aggregations: true,
-                        },
-                    }}
-                />
-            </div>
-        );
-    }
-}
+import { Ldm } from "../../ldm";
 
-export default VisualizationTable;
+const style = { height: 500 };
+export const InsightViewPivotTableByIdentifierExample = () => {
+    return (
+        <div style={style} className="s-insightView-pivot">
+            <InsightView insight={Ldm.Insights.TableReportLaborCostsVsScheduledCosts} />
+        </div>
+    );
+};
+
+export default InsightViewPivotTableByIdentifierExample;

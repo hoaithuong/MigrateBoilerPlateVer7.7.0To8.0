@@ -1,54 +1,27 @@
 // (C) 2007-2020 GoodData Corporation
-import React, { Component } from "react";
-import { AreaChart, Model } from "@gooddata/react-components";
-
-import "@gooddata/react-components/styles/css/main.css";
-
-import {
-    projectId,
-    monthDateIdentifier,
-    franchiseFeesIdentifier,
-    franchiseFeesAdRoyaltyIdentifier,
-    franchiseFeesInitialFranchiseFeeIdentifier,
-    franchiseFeesIdentifierOngoingRoyalty,
-} from "../utils/fixtures";
+import React from "react";
+import { AreaChart } from "@gooddata/sdk-ui-charts";
+import { Ldm, LdmExt } from "../../ldm";
 
 const measures = [
-    Model.measure(franchiseFeesIdentifier).format("#,##0"),
-    Model.measure(franchiseFeesAdRoyaltyIdentifier).format("#,##0"),
-    Model.measure(franchiseFeesInitialFranchiseFeeIdentifier).format("#,##0"),
-    Model.measure(franchiseFeesIdentifierOngoingRoyalty).format("#,##0"),
+    LdmExt.FranchiseFees,
+    LdmExt.FranchiseFeesAdRoyalty,
+    LdmExt.FranchiseFeesInitialFranchiseFee,
+    LdmExt.FranchiseFeesOngoingRoyalty,
 ];
 
-const viewBy = Model.attribute(monthDateIdentifier);
+const chartConfig = {
+    stacking: true,
+};
 
-export class StackedAreaChartExample extends Component {
-    onLoadingChanged(...params) {
-        // eslint-disable-next-line no-console
-        return console.log("StackedAreaChartExample onLoadingChanged", ...params);
-    }
+const style = { height: 300 };
 
-    onError(...params) {
-        // eslint-disable-next-line no-console
-        return console.log("StackedAreaChartExample onError", ...params);
-    }
-
-    render() {
-        return (
-            <div style={{ height: 300 }} className="s-stacked-area-chart">
-                <AreaChart
-                    projectId={projectId}
-                    measures={measures}
-                    viewBy={viewBy}
-                    onLoadingChanged={this.onLoadingChanged}
-                    onError={this.onError}
-                    config={{
-                        stacking: true,
-                    }}
-                />
-            </div>
-        );
-    }
-}
+export const StackedAreaChartExample = () => {
+    return (
+        <div style={style} className="s-stacked-area-chart">
+            <AreaChart measures={measures} viewBy={Ldm.DateMonth.Short} config={chartConfig} />
+        </div>
+    );
+};
 
 export default StackedAreaChartExample;

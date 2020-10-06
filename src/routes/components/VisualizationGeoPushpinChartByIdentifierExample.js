@@ -1,28 +1,22 @@
 // (C) 2020 GoodData Corporation
-import React, { Component } from "react";
-import "@gooddata/react-components/styles/css/main.css";
-import { Visualization } from "@gooddata/react-components";
+import React from "react";
 
-import { projectId } from "../utils/fixtures";
-import { MAPBOX_TOKEN, geoPushpinChartVisualizationIdentifier } from "../utils/fixturesGeoChart";
+import { InsightView } from "@gooddata/sdk-ui-ext";
 
-export class VisualizationGeoPushpinChartByIndentifier extends Component {
-    render() {
-        const geoConfig = {
-            mapboxToken: MAPBOX_TOKEN,
-        };
-        const style = { height: "500px" };
+import { Ldm } from "../../ldm";
+import { MAPBOX_TOKEN } from "../../constants/fixtures";
 
-        return (
-            <div style={style} className="s-visualization-geo-pushpin">
-                <Visualization
-                    projectId={projectId}
-                    identifier={geoPushpinChartVisualizationIdentifier}
-                    config={geoConfig}
-                />
-            </div>
-        );
-    }
-}
+export const InsightViewGeoPushpinByIdentifierExample = () => {
+    return (
+        <div style={{ height: 600, position: "relative" }} className="s-insightView-geo">
+            <InsightView
+                insight={Ldm.Insights.GeoPushpinChart}
+                config={{
+                    mapboxToken: MAPBOX_TOKEN,
+                }}
+            />
+        </div>
+    );
+};
 
-export default VisualizationGeoPushpinChartByIndentifier;
+export default InsightViewGeoPushpinByIdentifierExample;

@@ -1,54 +1,26 @@
 // (C) 2007-2019 GoodData Corporation
-import React, { Component } from "react";
-import { AreaChart, Model } from "@gooddata/react-components";
-
-import "@gooddata/react-components/styles/css/main.css";
-
-import {
-    projectId,
-    monthDateIdentifier,
-    franchiseFeesIdentifier,
-    franchiseFeesAdRoyaltyIdentifier,
-    franchiseFeesInitialFranchiseFeeIdentifier,
-    franchiseFeesIdentifierOngoingRoyalty,
-} from "../utils/fixtures";
+import React from "react";
+import { AreaChart } from "@gooddata/sdk-ui-charts";
+import { LdmExt } from "../../ldm";
 
 const measures = [
-    Model.measure(franchiseFeesIdentifier).format("#,##0"),
-    Model.measure(franchiseFeesAdRoyaltyIdentifier).format("#,##0"),
-    Model.measure(franchiseFeesInitialFranchiseFeeIdentifier).format("#,##0"),
-    Model.measure(franchiseFeesIdentifierOngoingRoyalty).format("#,##0"),
+    LdmExt.FranchiseFees,
+    LdmExt.FranchiseFeesAdRoyalty,
+    LdmExt.FranchiseFeesInitialFranchiseFee,
+    LdmExt.FranchiseFeesOngoingRoyalty,
 ];
 
-const viewBy = Model.attribute(monthDateIdentifier);
+const style = { height: 300 };
 
-export class AreaChartExample extends Component {
-    onLoadingChanged(...params) {
-        // eslint-disable-next-line no-console
-        return console.log("AreaChartExample onLoadingChanged", ...params);
-    }
+const chartConfig = {
+    stacking: false,
+};
 
-    onError(...params) {
-        // eslint-disable-next-line no-console
-        return console.log("AreaChartExample onError", ...params);
-    }
-
-    render() {
-        return (
-            <div style={{ height: 300, boxshadow: 'rgba(0, 0, 0, 0.2) 0px 1px 3px 0px'}} className="s-area-chart">
-                <AreaChart
-                    projectId={projectId}
-                    measures={measures}
-                    viewBy={viewBy}
-                    onLoadingChanged={this.onLoadingChanged}
-                    onError={this.onError}
-                    config={{
-                        stacking: false,
-                    }}
-                />
-            </div>
-        );
-    }
-}
-
+export const AreaChartExample = () => {
+    return (
+        <div style={style} className="s-area-chart">
+            <AreaChart measures={measures} viewBy={LdmExt.monthDate} config={chartConfig} />
+        </div>
+    );
+};
 export default AreaChartExample;

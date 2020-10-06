@@ -1,39 +1,19 @@
 // (C) 2007-2020 GoodData Corporation
 import React, { Component } from "react";
-import { BarChart, Model } from "@gooddata/react-components";
+import { BarChart } from "@gooddata/sdk-ui-charts";
+import { newMeasureValueFilter } from "@gooddata/sdk-model";
+import { LdmExt } from "../../ldm";
 
-import "@gooddata/react-components/styles/css/main.css";
-import {
-    projectId,
-    numberOfChecksIdentifier,
-    totalSalesIdentifier,
-    locationNameDisplayFormIdentifier,
-} from "../utils/fixtures";
+const measures = [LdmExt.TotalSales2, LdmExt.numberOfChecks];
 
-const measures = [
-    Model.measure(totalSalesIdentifier)
-        .localIdentifier("totalSales")
-        .title("Total Sales")
-        .format("#,##0"),
-    Model.measure(numberOfChecksIdentifier)
-        .localIdentifier("numOfChecks")
-        .title("Number of Checks")
-        .format("#,##0"),
-];
+const attributes = [LdmExt.LocationName];
 
-const attributes = [Model.attribute(locationNameDisplayFormIdentifier).localIdentifier("locationName")];
-
-const greaterThanFilter = Model.measureValueFilter("totalSales").condition("GREATER_THAN", {
-    value: 7000000,
-});
+const greaterThanFilter = newMeasureValueFilter(LdmExt.TotalSales2, "GREATER_THAN", 7000000);
 
 export class MeasureValueFilterExample extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            filters: [],
-        };
-    }
+    state = {
+        filters: [],
+    };
 
     renderPresetButton(label, appliedFilters, isActive) {
         return (
@@ -59,13 +39,12 @@ export class MeasureValueFilterExample extends Component {
                     {this.renderPresetButton(
                         "Total sales greater than 7,000,000 (stacked to 100%)",
                         [greaterThanFilter],
-                        filters.length > 0,
+                        filters.length > 0
                     )}
                 </div>
                 <hr className="separator" />
                 <div style={{ height: 300 }} className="s-stacked-bar">
                     <BarChart
-                        projectId={projectId}
                         measures={measures}
                         viewBy={attributes}
                         config={{

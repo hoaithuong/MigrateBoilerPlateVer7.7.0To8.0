@@ -1,47 +1,16 @@
 // (C) 2007-2019 GoodData Corporation
-import React, { Component } from "react";
-import { Heatmap, Model } from "@gooddata/react-components";
+import React from "react";
+import { Heatmap } from "@gooddata/sdk-ui-charts";
+import { Ldm, LdmExt } from "../../ldm";
 
-import "@gooddata/react-components/styles/css/main.css";
+const style = { height: 300 };
 
-import {
-    projectId,
-    totalSalesIdentifier,
-    menuCategoryAttributeDFIdentifier,
-    locationStateDisplayFormIdentifier,
-} from "../utils/fixtures";
-
-const totalSales = Model.measure(totalSalesIdentifier)
-    .format("#,##0")
-    .alias("$ Total Sales");
-const menuCategory = Model.attribute(menuCategoryAttributeDFIdentifier);
-const locationState = Model.attribute(locationStateDisplayFormIdentifier);
-
-export class HeatmapExample extends Component {
-    onLoadingChanged(...params) {
-        // eslint-disable-next-line no-console
-        console.info("HeatmapExample onLoadingChanged", ...params);
-    }
-
-    onError(...params) {
-        // eslint-disable-next-line no-console
-        console.info("HeatmapExample onLoadingChanged", ...params);
-    }
-
-    render() {
-        return (
-            <div style={{ height: 300 }} className="s-heat-map">
-                <Heatmap
-                    projectId={projectId}
-                    measure={totalSales}
-                    rows={locationState}
-                    columns={menuCategory}
-                    onLoadingChanged={this.onLoadingChanged}
-                    onError={this.onError}
-                />
-            </div>
-        );
-    }
-}
+export const HeatmapExample = () => {
+    return (
+        <div style={style} className="s-heat-map">
+            <Heatmap measure={LdmExt.TotalSales1} rows={Ldm.LocationState} columns={Ldm.MenuCategory} />
+        </div>
+    );
+};
 
 export default HeatmapExample;
